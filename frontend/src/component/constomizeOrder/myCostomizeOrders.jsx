@@ -17,7 +17,6 @@ const MyCostomizeOrders = () => {
             try {
                 const response = await axios.get(`http://localhost:5555/api/costomorders?userId=${userId}`);
                 setOrders(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error("Error fetching orders:", error);
                 setErrorMessage("Failed to fetch orders. Please try again later.");
@@ -30,6 +29,11 @@ const MyCostomizeOrders = () => {
     // Handle view button click
     const handleViewOrder = (orderId) => {
         navigate(`/order-details/${orderId}`); // Navigate to the order details page
+    };
+
+    // Handle update button click
+    const handleUpdateOrder = (orderId) => {
+        navigate(`/update-order/${orderId}`); // Navigate to the update order page
     };
 
     return (
@@ -63,11 +67,19 @@ const MyCostomizeOrders = () => {
                                         <td>{order.status}</td>
                                         <td>
                                             <button
-                                                className="btn btn-primary btn-sm"
+                                                className="btn btn-primary btn-sm me-2"
                                                 onClick={() => handleViewOrder(order._id)}
                                             >
                                                 View
                                             </button>
+                                            {order.status === "Pending" && (
+                                                <button
+                                                    className="btn btn-warning btn-sm"
+                                                    onClick={() => handleUpdateOrder(order._id)}
+                                                >
+                                                    Update
+                                                </button>
+                                            )}
                                         </td>
                                     </tr>
                                 ))
@@ -82,6 +94,9 @@ const MyCostomizeOrders = () => {
                     </table>
                 </div>
             </div>
+            <footer className="bg-primary text-white text-center py-3">
+                <p>&copy; 2023 My Store. All rights reserved.</p>
+            </footer>
         </div>
     );
 };

@@ -37,7 +37,7 @@ import HomePage from './component/home/HomePage';
 import CustomOrder from './component/constomizeOrder/CustomOrder';
 import MyCostomizeOrders from "./component/constomizeOrder/myCostomizeOrders";
 import CusotomOrderDetails from "./component/constomizeOrder/CustomOrderDetails";
-
+import UpdateOrder from './component/constomizeOrder/UpdateOrder';
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -76,6 +76,7 @@ function App() {
           <Route path="/customize-order" element={<CustomOrder />} />
           <Route path="/my-customize-order" element={<MyCostomizeOrders />} />
           <Route path="/order-details/:orderId" element={<CusotomOrderDetails />} />
+          <Route path="/update-order/:orderId" element={<UpdateOrder />} />
         </Routes>
       </div>
     </Router>

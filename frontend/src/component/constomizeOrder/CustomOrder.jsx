@@ -390,6 +390,10 @@ const CustomOrder = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            {/* Footer */}
+      <footer className="bg-primary text-white text-center py-3">
+        <p>&copy; 2023 My Store. All rights reserved.</p>
+      </footer>
         </div>
     );
 };
