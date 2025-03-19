@@ -49,3 +49,4 @@ coverage/
 jest/
 cypress/screenshots/
 cypress/videos/
+.qodo

@@ -29,6 +29,15 @@ import OrderList from './component/orderManagement/OrderList';
 import ItemList from './component/orderManagement/InventoryItems';
 import OrderDetails from './component/orderManagement/OrderDetails';
 
+//home
+import HomePage from './component/home/HomePage';
+
+
+//order costomize 
+import CustomOrder from './component/constomizeOrder/CustomOrder';
+import MyCostomizeOrders from "./component/constomizeOrder/myCostomizeOrders";
+import CusotomOrderDetails from "./component/constomizeOrder/CustomOrderDetails";
+
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -62,6 +71,11 @@ function App() {
           <Route path="/inventory" element ={<ItemList />}/>
           <Route path="/orderlist" element={<OrderList />}/>
           <Route path="/orders/:orderId" element={<OrderDetails />} />
+
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/customize-order" element={<CustomOrder />} />
+          <Route path="/my-customize-order" element={<MyCostomizeOrders />} />
+          <Route path="/order-details/:orderId" element={<CusotomOrderDetails />} />
         </Routes>
       </div>
     </Router>
