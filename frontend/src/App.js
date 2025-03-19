@@ -38,6 +38,9 @@ import CustomOrder from './component/constomizeOrder/CustomOrder';
 import MyCostomizeOrders from "./component/constomizeOrder/myCostomizeOrders";
 import CusotomOrderDetails from "./component/constomizeOrder/CustomOrderDetails";
 import UpdateOrder from './component/constomizeOrder/UpdateOrder';
+import AllCustomOrders from "./component/constomizeOrder/AllCustomOrders";
+import CusOrderDetails from "./component/constomizeOrder/OrderDetails";
+import ViewDetail from './component/constomizeOrder/viewDetail';
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -77,6 +80,9 @@ function App() {
           <Route path="/my-customize-order" element={<MyCostomizeOrders />} />
           <Route path="/order-details/:orderId" element={<CusotomOrderDetails />} />
           <Route path="/update-order/:orderId" element={<UpdateOrder />} />
+          <Route path="/all-custom-orders" element={<AllCustomOrders />} />
+          <Route path="/custom-orders/:orderId" element={<CusOrderDetails />} />
+          <Route path="/admin-order-details/:orderId" element={<ViewDetail />} />
         </Routes>
       </div>
     </Router>

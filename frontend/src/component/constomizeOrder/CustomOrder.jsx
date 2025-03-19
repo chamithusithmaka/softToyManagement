@@ -132,218 +132,205 @@ const CustomOrder = () => {
                 <div className="card shadow-lg">
                     <div className="card-body">
                         <h2 className="card-title text-center mb-4">Custom Order Form</h2>
-
+    
                         {successMessage && <div className="alert alert-success">{successMessage}</div>}
                         {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-
+    
                         <form onSubmit={handleSubmit}>
-                            <p>Order ID: <strong>{orderId}</strong></p>
-
-                            {/* Customer Info */}
-                            <div className="mb-3">
-                                <label className="form-label">Name:</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={customerInfo.name}
-                                    onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
-                                    required
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Address:</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={customerInfo.address}
-                                    onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
-                                    required
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Phone:</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={customerInfo.phone}
-                                    onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
-                                    required
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Email:</label>
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    value={customerInfo.email}
-                                    onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                                    required
-                                />
-                            </div>
-
-                            {/* Toy Type */}
-                            <div className="mb-3">
-                                <label className="form-label">Toy Type:</label>
-                                <select className="form-select" onChange={(e) => setToy(e.target.value)} required>
-                                    <option value="">Select</option>
-                                    <option value="bear">Bear</option>
-                                    <option value="rabbit">Rabbit</option>
-                                    <option value="cartoon">Cartoon Character</option>
-                                </select>
-                            </div>
-
-                            {/* Size */}
-                            <div className="mb-3">
-                                <label className="form-label">Size:</label>
-                                <select className="form-select" onChange={(e) => setSize(e.target.value)} required>
-                                    <option value="">Select</option>
-                                    <option value="small">Small</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="large">Large</option>
-                                    <option value="xl">Extra Large</option>
-                                </select>
-                            </div>
-
-                            {/* Fabric */}
-                            <div className="mb-3">
-                                <label className="form-label">Fabric:</label>
-                                <select className="form-select" onChange={(e) => setFabric(e.target.value)} required>
-                                    <option value="">Select</option>
-                                    <option value="plush">Plush</option>
-                                    <option value="cotton">Cotton</option>
-                                </select>
-                            </div>
-
-                            {/* Color */}
-                            <div className="mb-3">
-                                <label className="form-label">Color:</label>
-                                <select className="form-select" onChange={(e) => setColor(e.target.value)} required>
-                                    <option value="">Select</option>
-                                    <option value="single">Single Color</option>
-                                    <option value="multiple">Multiple Colors</option>
-                                </select>
-                            </div>
-
-                            {/* Message */}
-                            <div className="mb-3">
-                                <label className="form-label">Custom Message:</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter a custom message"
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                />
-                            </div>
-
-                            {/* Accessories */}
-                            <div className="mb-3">
-                                <label className="form-label">Accessories:</label>
-                                <div className="form-check">
+                            <p className="text-muted">Order ID: <strong>{orderId}</strong></p>
+    
+                            <div className="row">
+                                {/* Customer Info */}
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Name:</label>
                                     <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value="clothing"
-                                        onChange={(e) => setAccessories([...accessories, e.target.value])}
+                                        type="text"
+                                        className="form-control"
+                                        value={customerInfo.name}
+                                        onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                                        required
                                     />
-                                    <label className="form-check-label">Clothing</label>
                                 </div>
-                                <div className="form-check">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Address:</label>
                                     <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value="bow"
-                                        onChange={(e) => setAccessories([...accessories, e.target.value])}
+                                        type="text"
+                                        className="form-control"
+                                        value={customerInfo.address}
+                                        onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                                        required
                                     />
-                                    <label className="form-check-label">Bow</label>
                                 </div>
-                                <div className="form-check">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Phone:</label>
                                     <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value="hat"
-                                        onChange={(e) => setAccessories([...accessories, e.target.value])}
+                                        type="text"
+                                        className="form-control"
+                                        value={customerInfo.phone}
+                                        onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                                        required
                                     />
-                                    <label className="form-check-label">Hat</label>
                                 </div>
-                                <div className="form-check">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Email:</label>
                                     <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value="lights"
-                                        onChange={(e) => setAccessories([...accessories, e.target.value])}
+                                        type="email"
+                                        className="form-control"
+                                        value={customerInfo.email}
+                                        onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                                        required
                                     />
-                                    <label className="form-check-label">Lights</label>
-                                </div>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value="sound"
-                                        onChange={(e) => setAccessories([...accessories, e.target.value])}
-                                    />
-                                    <label className="form-check-label">Sound Module</label>
                                 </div>
                             </div>
-
-                            {/* Delivery Date */}
-                            <div className="mb-3">
-                                <label className="form-label">Delivery Date:</label>
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    value={deliveryDate}
-                                    onChange={(e) => validateDeliveryDate(e.target.value)}
-                                    required
-                                />
+    
+                            <hr />
+    
+                            <div className="row">
+                                {/* Toy Details */}
+                                <div className="col-md-4 mb-3">
+                                    <label className="form-label">Toy Type:</label>
+                                    <select className="form-select" onChange={(e) => setToy(e.target.value)} required>
+                                        <option value="">Select</option>
+                                        <option value="bear">Bear</option>
+                                        <option value="rabbit">Rabbit</option>
+                                        <option value="cartoon">Cartoon Character</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-4 mb-3">
+                                    <label className="form-label">Size:</label>
+                                    <select className="form-select" onChange={(e) => setSize(e.target.value)} required>
+                                        <option value="">Select</option>
+                                        <option value="small">Small</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="large">Large</option>
+                                        <option value="xl">Extra Large</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-4 mb-3">
+                                    <label className="form-label">Fabric:</label>
+                                    <select className="form-select" onChange={(e) => setFabric(e.target.value)} required>
+                                        <option value="">Select</option>
+                                        <option value="plush">Plush</option>
+                                        <option value="cotton">Cotton</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Color:</label>
+                                    <select className="form-select" onChange={(e) => setColor(e.target.value)} required>
+                                        <option value="">Select</option>
+                                        <option value="single">Single Color</option>
+                                        <option value="multiple">Multiple Colors</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Custom Message:</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Enter a custom message"
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                    />
+                                </div>
                             </div>
-
-                            {/* Quantity */}
-                            <div className="mb-3">
-                                <label className="form-label">Quantity:</label>
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    value={quantity}
-                                    min="1"
-                                    onChange={(e) => setQuantity(parseInt(e.target.value))}
-                                    required
-                                />
+    
+                            <hr />
+    
+                            <div className="row">
+                                {/* Accessories */}
+                                <div className="col-md-12 mb-3">
+                                    <label className="form-label">Accessories:</label>
+                                    <div className="d-flex flex-wrap">
+                                        {["clothing", "bow", "hat", "lights", "sound"].map((accessory) => (
+                                            <div className="form-check me-3" key={accessory}>
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    value={accessory}
+                                                    onChange={(e) =>
+                                                        setAccessories(
+                                                            e.target.checked
+                                                                ? [...accessories, accessory]
+                                                                : accessories.filter((acc) => acc !== accessory)
+                                                        )
+                                                    }
+                                                />
+                                                <label className="form-check-label text-capitalize">{accessory}</label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
-
-                            {/* Payment Method */}
-                            <div className="mb-3">
-                                <label className="form-label">Payment Method:</label>
-                                <select
-                                    className="form-select"
-                                    onChange={(e) => handlePaymentMethodChange(e.target.value)}
-                                    required
-                                >
-                                    <option value="">Select</option>
-                                    <option value="credit-card">Credit Card</option>
-                                    <option value="cash-on-delivery">Cash on Delivery</option>
-                                </select>
+    
+                            <hr />
+    
+                            <div className="row">
+                                {/* Delivery and Quantity */}
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Delivery Date:</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        value={deliveryDate}
+                                        onChange={(e) => validateDeliveryDate(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Quantity:</label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        value={quantity}
+                                        min="1"
+                                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                        required
+                                    />
+                                </div>
                             </div>
-
-                            {/* Shipping Method */}
-                            <div className="mb-3">
-                                <label className="form-label">Shipping Method:</label>
-                                <select className="form-select" onChange={(e) => setShippingMethod(e.target.value)} required>
-                                    <option value="">Select</option>
-                                    <option value="standard">Standard</option>
-                                    <option value="express">Express</option>
-                                    <option value="international">International</option>
-                                </select>
+    
+                            <hr />
+    
+                            <div className="row">
+                                {/* Payment and Shipping */}
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Payment Method:</label>
+                                    <select
+                                        className="form-select"
+                                        onChange={(e) => handlePaymentMethodChange(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select</option>
+                                        <option value="credit-card">Credit Card</option>
+                                        <option value="cash-on-delivery">Cash on Delivery</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Shipping Method:</label>
+                                    <select className="form-select" onChange={(e) => setShippingMethod(e.target.value)} required>
+                                        <option value="">Select</option>
+                                        <option value="standard">Standard</option>
+                                        <option value="express">Express</option>
+                                        <option value="international">International</option>
+                                    </select>
+                                </div>
                             </div>
-
-                            <p className="mt-4 fs-5 fw-bold">Total Price: LKR {totalPrice.toLocaleString()}</p>
-
+    
+                            <hr />
+    
+                            <div className="row">
+                                {/* Total Price */}
+                                <div className="col-md-12 text-center">
+                                    <p className="fs-4 fw-bold">Total Price: LKR {totalPrice.toLocaleString()}</p>
+                                </div>
+                            </div>
+    
                             <button type="submit" className="btn btn-primary w-100">Place Order</button>
                         </form>
                     </div>
                 </div>
             </div>
-
+    
             {/* Payment Modal */}
             <Modal show={showPaymentModal} onHide={() => setShowPaymentModal(false)}>
                 <Modal.Header closeButton>
@@ -390,10 +377,11 @@ const CustomOrder = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+    
             {/* Footer */}
-      <footer className="bg-primary text-white text-center py-3">
-        <p>&copy; 2023 My Store. All rights reserved.</p>
-      </footer>
+            <footer className="bg-primary text-white text-center py-3 mt-5">
+                <p>&copy; 2023 My Store. All rights reserved.</p>
+            </footer>
         </div>
     );
 };

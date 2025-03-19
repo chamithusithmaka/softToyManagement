@@ -119,4 +119,25 @@ router.patch("/costomorders/:id", async (req, res) => {
     }
 });
 
+router.patch("/costomorders/:id/status", async (req, res) => {
+    try {
+        const { status } = req.body;
+        if (!["Pending", "On Delivery", "Completed", "Cancelled"].includes(status)) {
+            return res.status(400).json({ message: "Invalid status" });
+        }
+        const updatedOrder = await Order.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true }
+        );
+        if (!updatedOrder) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+        res.status(200).json(updatedOrder);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error updating order status", error });
+    }
+});
+
 module.exports = router;

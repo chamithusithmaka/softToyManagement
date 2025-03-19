@@ -61,7 +61,7 @@ const AdminHome = () => {
         {/* Customized Order Management Section */}
         <div className="col-md-6">
           <div className="card shadow-lg border-0 h-100">
-            <Link to="/customized-orders" className="text-decoration-none">
+            <Link to="/all-custom-orders" className="text-decoration-none">
               <div className="card-body text-center">
                 <div className="bg-info text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4" style={{ width: '100px', height: '100px' }}>
                   <span className="fs-1">🎨</span>
