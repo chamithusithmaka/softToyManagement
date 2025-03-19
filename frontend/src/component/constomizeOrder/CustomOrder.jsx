@@ -21,7 +21,7 @@ const CustomOrder = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [showPaymentModal, setShowPaymentModal] = useState(false); // State to control modal visibility
-
+    const [error, setError] = useState(""); // State to store error messages
     // Auto-generate order ID
     useEffect(() => {
         const randomNum = Math.floor(1 + Math.random() * 999).toString().padStart(3, "0");
@@ -77,6 +77,70 @@ const CustomOrder = () => {
             setDeliveryDate(date);
         }
     };
+
+
+
+    // Payment validation functions
+    const handleCardNumberChange = (e) => {
+        const regex = /^\d{0,12}$/; // Only allow numbers and max length of 12
+        if (regex.test(e.target.value)) {
+            setCreditCardInfo({ ...creditCardInfo, cardNumber: e.target.value });
+        }
+    };
+
+    const handleCvvChange = (e) => {
+        const regex = /^\d{0,3}$/; // Only allow numbers and max length of 3
+        if (regex.test(e.target.value)) {
+            setCreditCardInfo({ ...creditCardInfo, cvv: e.target.value });
+        }
+    };
+
+    const handleExpirationDateChange = (e) => {
+        let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + '/' + value.slice(2); // Insert '/' after MM
+        }
+
+        if (value.length === 5) {
+            const month = parseInt(value.slice(0, 2));
+            const year = parseInt('20' + value.slice(3, 5));
+
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth() + 1; // Months are zero-indexed
+
+            // Check for invalid month
+            if (month < 1 || month > 12) {
+                setError('Invalid month. Please enter a valid expiration date.');
+                return;
+            }
+
+            // Check for invalid year
+            if (year < currentYear || year > currentYear + 4) {
+                setError('Invalid year. Please enter a year between ' + currentYear + ' and ' + (currentYear + 4) + '.');
+                return;
+            }
+
+            // Check for expiration based on current month
+            if (year === currentYear && month < currentMonth) {
+                setError('Expired date. Please enter a valid expiration date.');
+                return;
+            }
+
+            setError(''); // Clear any previous error if the date is valid
+        }
+
+        setCreditCardInfo({ ...creditCardInfo, expiry: value });
+    };
+    const handleClear = () => {
+        setCreditCardInfo({
+            cardNumber: '',
+            expiry: '',
+            cvv: ''
+        });
+        setError(''); // Clear any error messages
+    };
+
 
     // Handle form submission
     const handleSubmit = async (e) => {
@@ -343,7 +407,8 @@ const CustomOrder = () => {
                             type="text"
                             className="form-control"
                             placeholder="Enter card number"
-                            onChange={(e) => setCreditCardInfo({ ...creditCardInfo, cardNumber: e.target.value })}
+                            value={creditCardInfo.cardNumber}
+                            onChange={handleCardNumberChange}
                             required
                         />
                     </div>
@@ -353,7 +418,8 @@ const CustomOrder = () => {
                             type="text"
                             className="form-control"
                             placeholder="MM/YY"
-                            onChange={(e) => setCreditCardInfo({ ...creditCardInfo, expiry: e.target.value })}
+                            value={creditCardInfo.expiry}
+                            onChange={handleExpirationDateChange}
                             required
                         />
                     </div>
@@ -363,10 +429,12 @@ const CustomOrder = () => {
                             type="text"
                             className="form-control"
                             placeholder="Enter CVV"
-                            onChange={(e) => setCreditCardInfo({ ...creditCardInfo, cvv: e.target.value })}
+                            value={creditCardInfo.cvv}
+                            onChange={handleCvvChange}
                             required
                         />
                     </div>
+                    {error && <p className="text-danger">{error}</p>}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowPaymentModal(false)}>

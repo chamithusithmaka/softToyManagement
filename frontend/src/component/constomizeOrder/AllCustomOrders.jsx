@@ -5,6 +5,8 @@ import AdminSideBar from "./adminSideBar";
 
 const AllCustomOrders = () => {
     const [orders, setOrders] = useState([]);
+    const [filteredOrders, setFilteredOrders] = useState([]); // State for filtered orders
+    const [searchQuery, setSearchQuery] = useState(""); // State for search input
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
@@ -14,6 +16,7 @@ const AllCustomOrders = () => {
             try {
                 const response = await axios.get("http://localhost:5555/api/costomorders");
                 setOrders(response.data);
+                setFilteredOrders(response.data); // Initialize filtered orders
             } catch (error) {
                 console.error("Error fetching orders:", error);
                 setErrorMessage("Failed to fetch orders. Please try again later.");
@@ -23,6 +26,18 @@ const AllCustomOrders = () => {
         fetchOrders();
     }, []);
 
+    // Handle search input change
+    const handleSearchChange = (e) => {
+        const query = e.target.value.toLowerCase();
+        setSearchQuery(query);
+
+        // Filter orders by Order ID
+        const filtered = orders.filter((order) =>
+            order.orderId.toLowerCase().includes(query)
+        );
+        setFilteredOrders(filtered);
+    };
+
     // Handle view button click
     const handleViewOrder = (orderId) => {
         navigate(`/admin-order-details/${orderId}`); // Navigate to the order details page
@@ -30,14 +45,25 @@ const AllCustomOrders = () => {
 
     return (
         <div className="d-flex">
-      {/* Sidebar */}
-      <AdminSideBar />
+            {/* Sidebar */}
+            <AdminSideBar />
 
-      {/* Main Content */}
-      <div className="container-fluid" style={{ marginLeft: '16rem' }}>
+            {/* Main Content */}
+            <div className="container-fluid" style={{ marginLeft: "16rem" }}>
                 <h2 className="text-center mb-4">All Customized Orders</h2>
 
                 {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
+                {/* Search Bar */}
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search by Order ID"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
+                </div>
 
                 <div className="table-responsive">
                     <table className="table table-bordered table-hover">
@@ -53,8 +79,8 @@ const AllCustomOrders = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.length > 0 ? (
-                                orders.map((order) => (
+                            {filteredOrders.length > 0 ? (
+                                filteredOrders.map((order) => (
                                     <tr key={order._id}>
                                         <td>{order.orderId}</td>
                                         <td>{order.customerInfo.name}</td>

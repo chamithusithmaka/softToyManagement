@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const storeItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
   code: { type: String, required: true, unique: true },
-  companyName: { type: String, required: true, unique: true },
+  companyName: { type: String, required: true }, // Removed unique constraint
   description: { type: String, required: true },
   qty: { type: Number, required: true },
   buyingPrice: { type: Number, required: true },

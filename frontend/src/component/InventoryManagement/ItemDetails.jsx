@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ItemDetails = () => {
   const { id } = useParams(); // Get item ID from URL
@@ -19,17 +19,17 @@ const ItemDetails = () => {
         // Fetch item details by ID
         const itemResponse = await axios.get(`http://localhost:5555/inventory-items/${id}`);
         if (!itemResponse.data) {
-          throw new Error('Item not found');
+          throw new Error("Item not found");
         }
         setItem(itemResponse.data);
         setUpdatedItem(itemResponse.data); // Initialize with fetched data
 
         // Fetch available categories
-        const categoriesResponse = await axios.get('http://localhost:5555/categories');
+        const categoriesResponse = await axios.get("http://localhost:5555/categories");
         setCategories(categoriesResponse.data);
       } catch (error) {
-        console.error('Error fetching item or category details:', error);
-        setError('Error fetching item or category details. Please try again later.');
+        console.error("Error fetching item or category details:", error);
+        setError("Error fetching item or category details. Please try again later.");
       }
     };
 
@@ -39,22 +39,22 @@ const ItemDetails = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:5555/inventory-items/${id}`);
-      alert('Item deleted successfully');
-      navigate('/dashboard/senura'); // Redirect back to the inventory list
+      alert("Item deleted successfully");
+      navigate("/dashboard/inventory"); // Redirect back to the inventory list
     } catch (error) {
-      alert('Error deleting item');
+      alert("Error deleting item");
     }
   };
 
   // Validation function
   const validateForm = () => {
     const errors = {};
-    if (!updatedItem.name) errors.name = 'Name is required';
-    if (!updatedItem.price || updatedItem.price < 0) errors.price = 'Price must be a non-negative number';
-    if (!updatedItem.qty || updatedItem.qty < 0) errors.qty = 'Quantity must be a non-negative number';
-    if (!updatedItem.description) errors.description = 'Description is required';
-    if (!updatedItem.companyName) errors.companyName = 'Company name is required';
-    if (!updatedItem.category) errors.category = 'Category is required';
+    if (!updatedItem.name) errors.name = "Name is required";
+    if (!updatedItem.price || updatedItem.price < 0) errors.price = "Price must be a non-negative number";
+    if (!updatedItem.qty || updatedItem.qty < 0) errors.qty = "Quantity must be a non-negative number";
+    if (!updatedItem.description) errors.description = "Description is required";
+    if (!updatedItem.companyName) errors.companyName = "Company name is required";
+    if (!updatedItem.category) errors.category = "Category is required";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0; // Return true if no errors
@@ -65,62 +65,70 @@ const ItemDetails = () => {
 
     try {
       await axios.put(`http://localhost:5555/inventory-items/${id}`, updatedItem);
-      alert('Item updated successfully');
+      alert("Item updated successfully");
       setShowModal(false); // Close the modal after successful update
       navigate(`/items/${id}`); // Refresh item details page after update
     } catch (error) {
-      alert('Error updating item');
+      alert("Error updating item");
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedItem({ ...updatedItem, [name]: value });
-    setFormErrors({ ...formErrors, [name]: '' }); // Clear error for this field
+    setFormErrors({ ...formErrors, [name]: "" }); // Clear error for this field
   };
 
   const handleCategoryChange = (e) => {
     const selectedCategory = categories.find((cat) => cat._id === e.target.value);
     setUpdatedItem({ ...updatedItem, category: selectedCategory });
-    setFormErrors({ ...formErrors, category: '' }); // Clear category error
+    setFormErrors({ ...formErrors, category: "" }); // Clear category error
   };
 
   if (error) return <div className="text-danger text-center mt-4">{error}</div>;
   if (!item) return <div className="text-center mt-4">Loading...</div>;
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-5">
       <h1 className="text-center mb-4 text-primary">Item Details</h1>
-      <div className="card shadow-sm mb-4 border-0">
-        {item.photo && (
-          <img
-            src={`data:image/jpeg;base64,${item.photo}`}
-            className="card-img-top rounded"
-            alt={item.name}
-            style={{ height: '400px', objectFit: 'contain' }}
-          />
-        )}
-        <div className="card-body">
-          <h5 className="card-title text-dark fw-bold">{item.name}</h5>
-          <p className="card-text">
-            <strong>Price:</strong> LKR {item.price.toFixed(2)}
-          </p>
-          <p className="card-text">
-            <strong>Quantity:</strong> {item.qty}
-          </p>
-          <p className="card-text">
-            <strong>Description:</strong> {item.description}
-          </p>
-          <p className="card-text">
-            <strong>Company:</strong> {item.companyName}
-          </p>
-          <p className="card-text">
-            <strong>Category:</strong> {item.category?.name || 'N/A'}
-          </p>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="card shadow-sm border-0">
+            {item.photo && (
+              <img
+                src={`data:image/jpeg;base64,${item.photo}`}
+                className="card-img-top rounded"
+                alt={item.name}
+                style={{ height: "400px", objectFit: "contain" }}
+              />
+            )}
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="card shadow-sm border-0">
+            <div className="card-body">
+              <h5 className="card-title text-dark fw-bold">{item.name}</h5>
+              <p className="card-text">
+                <strong>Price:</strong> LKR {item.price.toFixed(2)}
+              </p>
+              <p className="card-text">
+                <strong>Quantity:</strong> {item.qty}
+              </p>
+              <p className="card-text">
+                <strong>Description:</strong> {item.description}
+              </p>
+              <p className="card-text">
+                <strong>Company:</strong> {item.companyName}
+              </p>
+              <p className="card-text">
+                <strong>Category:</strong> {item.category?.name || "N/A"}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="d-flex justify-content-center gap-3">
+      <div className="d-flex justify-content-center gap-3 mt-4">
         <button className="btn btn-secondary px-4" onClick={() => navigate(-1)}>
           Back
         </button>
@@ -152,9 +160,9 @@ const ItemDetails = () => {
                     <input
                       type="text"
                       name="name"
-                      value={updatedItem.name || ''}
+                      value={updatedItem.name || ""}
                       onChange={handleInputChange}
-                      className={`form-control ${formErrors.name ? 'is-invalid' : ''}`}
+                      className={`form-control ${formErrors.name ? "is-invalid" : ""}`}
                     />
                     {formErrors.name && <div className="invalid-feedback">{formErrors.name}</div>}
                   </div>
@@ -164,9 +172,9 @@ const ItemDetails = () => {
                     <input
                       type="number"
                       name="price"
-                      value={updatedItem.price || ''}
+                      value={updatedItem.price || ""}
                       onChange={handleInputChange}
-                      className={`form-control ${formErrors.price ? 'is-invalid' : ''}`}
+                      className={`form-control ${formErrors.price ? "is-invalid" : ""}`}
                     />
                     {formErrors.price && <div className="invalid-feedback">{formErrors.price}</div>}
                   </div>
@@ -176,9 +184,9 @@ const ItemDetails = () => {
                     <input
                       type="number"
                       name="qty"
-                      value={updatedItem.qty || ''}
+                      value={updatedItem.qty || ""}
                       onChange={handleInputChange}
-                      className={`form-control ${formErrors.qty ? 'is-invalid' : ''}`}
+                      className={`form-control ${formErrors.qty ? "is-invalid" : ""}`}
                     />
                     {formErrors.qty && <div className="invalid-feedback">{formErrors.qty}</div>}
                   </div>
@@ -187,9 +195,9 @@ const ItemDetails = () => {
                     <label className="form-label">Description</label>
                     <textarea
                       name="description"
-                      value={updatedItem.description || ''}
+                      value={updatedItem.description || ""}
                       onChange={handleInputChange}
-                      className={`form-control ${formErrors.description ? 'is-invalid' : ''}`}
+                      className={`form-control ${formErrors.description ? "is-invalid" : ""}`}
                       rows="3"
                     ></textarea>
                     {formErrors.description && <div className="invalid-feedback">{formErrors.description}</div>}
@@ -200,9 +208,9 @@ const ItemDetails = () => {
                     <input
                       type="text"
                       name="companyName"
-                      value={updatedItem.companyName || ''}
+                      value={updatedItem.companyName || ""}
                       onChange={handleInputChange}
-                      className={`form-control ${formErrors.companyName ? 'is-invalid' : ''}`}
+                      className={`form-control ${formErrors.companyName ? "is-invalid" : ""}`}
                     />
                     {formErrors.companyName && <div className="invalid-feedback">{formErrors.companyName}</div>}
                   </div>
@@ -211,9 +219,9 @@ const ItemDetails = () => {
                     <label className="form-label">Category</label>
                     <select
                       name="category"
-                      value={updatedItem.category?._id || ''}
+                      value={updatedItem.category?._id || ""}
                       onChange={handleCategoryChange}
-                      className={`form-select ${formErrors.category ? 'is-invalid' : ''}`}
+                      className={`form-select ${formErrors.category ? "is-invalid" : ""}`}
                     >
                       <option value="">Select a category</option>
                       {categories.map((cat) => (
