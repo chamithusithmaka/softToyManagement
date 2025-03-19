@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const MyCostomizeOrders = () => {
     const [orders, setOrders] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
 
     // Fake user ID for demonstration purposes
@@ -36,6 +37,20 @@ const MyCostomizeOrders = () => {
         navigate(`/update-order/${orderId}`); // Navigate to the update order page
     };
 
+    // Handle delete button click
+    const handleDeleteOrder = async (orderId) => {
+        if (window.confirm("Are you sure you want to delete this order?")) {
+            try {
+                await axios.delete(`http://localhost:5555/api/costomorders/${orderId}`);
+                setSuccessMessage("Order deleted successfully!");
+                setOrders(orders.filter((order) => order._id !== orderId)); // Remove the deleted order from the list
+            } catch (error) {
+                console.error("Error deleting order:", error);
+                setErrorMessage("Failed to delete the order. Please try again.");
+            }
+        }
+    };
+
     return (
         <div>
             <Header />
@@ -43,6 +58,7 @@ const MyCostomizeOrders = () => {
                 <h2 className="text-center mb-4">My Customized Orders</h2>
 
                 {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+                {successMessage && <div className="alert alert-success">{successMessage}</div>}
 
                 <div className="table-responsive">
                     <table className="table table-bordered table-hover">
@@ -74,10 +90,18 @@ const MyCostomizeOrders = () => {
                                             </button>
                                             {order.status === "Pending" && (
                                                 <button
-                                                    className="btn btn-warning btn-sm"
+                                                    className="btn btn-warning btn-sm me-2"
                                                     onClick={() => handleUpdateOrder(order._id)}
                                                 >
                                                     Update
+                                                </button>
+                                            )}
+                                            {order.status === "Cancelled" && (
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={() => handleDeleteOrder(order._id)}
+                                                >
+                                                    Delete
                                                 </button>
                                             )}
                                         </td>

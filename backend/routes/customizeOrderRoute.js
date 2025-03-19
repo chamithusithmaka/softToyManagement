@@ -140,4 +140,47 @@ router.patch("/costomorders/:id/status", async (req, res) => {
     }
 });
 
+// Fetch Completed Orders
+router.get("/customorders/completed", async (req, res) => {
+    try {
+        const completedOrders = await Order.find({ status: "Completed" });
+        res.status(200).json(completedOrders);
+    } catch (error) {
+        console.error("Error fetching completed orders:", error);
+        res.status(500).json({ message: "Error fetching completed orders", error });
+    }
+});
+// Fetch On Delivery Orders
+router.get("/customorders/on-delivery", async (req, res) => {
+    try {
+        const onDeliveryOrders = await Order.find({ status: "On Delivery" });
+        res.status(200).json(onDeliveryOrders);
+    } catch (error) {
+        console.error("Error fetching on delivery orders:", error);
+        res.status(500).json({ message: "Error fetching on delivery orders", error });
+    }
+});
+
+// Fetch Cancelled Orders
+router.get("/customorders/cancelled", async (req, res) => {
+    try {
+        const cancelledOrders = await Order.find({ status: "Cancelled" });
+        res.status(200).json(cancelledOrders);
+    } catch (error) {
+        console.error("Error fetching cancelled orders:", error);
+        res.status(500).json({ message: "Error fetching cancelled orders", error });
+    }
+});
+
+// Fetch Pending Orders
+router.get("/customorders/pending", async (req, res) => {
+    try {
+        const pendingOrders = await Order.find({ status: "Pending" });
+        res.status(200).json(pendingOrders);
+    } catch (error) {
+        console.error("Error fetching pending orders:", error);
+        res.status(500).json({ message: "Error fetching pending orders", error });
+    }
+});
+
 module.exports = router;

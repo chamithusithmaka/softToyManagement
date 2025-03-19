@@ -7,7 +7,7 @@ const Header = () => {
     <header className="bg-primary text-white py-3 shadow">
       <div className="container d-flex justify-content-between align-items-center">
         {/* Logo */}
-        <h1 className="h4">My Store</h1>
+        <h1 className="h4">Soft Toy Production</h1>
         
         {/* Navigation Links */}
         <nav>

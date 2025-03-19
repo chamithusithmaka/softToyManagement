@@ -41,6 +41,12 @@ import UpdateOrder from './component/constomizeOrder/UpdateOrder';
 import AllCustomOrders from "./component/constomizeOrder/AllCustomOrders";
 import CusOrderDetails from "./component/constomizeOrder/OrderDetails";
 import ViewDetail from './component/constomizeOrder/viewDetail';
+
+import CusOnDeliveryOrders from './component/constomizeOrder/CusOnDeliveryOrders';
+import CusPendingOrders from './component/constomizeOrder/CusPendingOrders';
+import CusCancelledOrders from './component/constomizeOrder/CusCancelledOrders';
+import CusCompletedOrders from './component/constomizeOrder/CusCompletedOrders';
+import CustomOrderReport from './component/constomizeOrder/CustomOrderReport';
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -83,6 +89,11 @@ function App() {
           <Route path="/all-custom-orders" element={<AllCustomOrders />} />
           <Route path="/custom-orders/:orderId" element={<CusOrderDetails />} />
           <Route path="/admin-order-details/:orderId" element={<ViewDetail />} />
+          <Route path="/cuson-delivery" element={<CusOnDeliveryOrders />} />
+          <Route path="/cuspending" element={<CusPendingOrders />} />
+          <Route path="/cuscancelled" element={<CusCancelledOrders />} />
+          <Route path="/cuscompleted" element={<CusCompletedOrders />} />
+          <Route path="/custom-order-report" element={<CustomOrderReport />} />
         </Routes>
       </div>
     </Router>
