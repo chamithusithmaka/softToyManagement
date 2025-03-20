@@ -16,7 +16,7 @@ const customOrderSchema = new mongoose.Schema({
             match: [/^\S+@\S+\.\S+$/, "Invalid email address"]
         }
     },
-    orderId:{type: String},
+    orderId: { type: String, required: true, unique: true },
     toyType: { type: String, required: true },
     size: { type: String, required: true },
     fabric: { type: String, required: true },

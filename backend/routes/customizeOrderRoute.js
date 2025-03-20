@@ -183,4 +183,20 @@ router.get("/customorders/pending", async (req, res) => {
     }
 });
 
+//http://localhost:5555/api/custom-orders/:order Id
+// Route to fetch an order by orderId
+router.get("/custom-orders/:orderId", async (req, res) => {
+    try {
+        const order = await Order.findOne({ orderId: req.params.orderId });
+
+        if (!order) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        res.status(200).json(order);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
 module.exports = router;

@@ -47,6 +47,7 @@ import CusPendingOrders from './component/constomizeOrder/CusPendingOrders';
 import CusCancelledOrders from './component/constomizeOrder/CusCancelledOrders';
 import CusCompletedOrders from './component/constomizeOrder/CusCompletedOrders';
 import CustomOrderReport from './component/constomizeOrder/CustomOrderReport';
+import DeliveryDetail from './component/constomizeOrder/DeliveryDetail';
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -81,6 +82,7 @@ function App() {
           <Route path="/orderlist" element={<OrderList />}/>
           <Route path="/orders/:orderId" element={<OrderDetails />} />
 
+          <Route path="/delivery-detail/:orderId" element={<DeliveryDetail />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/customize-order" element={<CustomOrder />} />
           <Route path="/my-customize-order" element={<MyCostomizeOrders />} />

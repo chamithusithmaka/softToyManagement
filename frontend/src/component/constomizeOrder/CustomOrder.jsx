@@ -142,15 +142,14 @@ const CustomOrder = () => {
     };
 
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         if (paymentMethod === "credit-card" && (!creditCardInfo.cardNumber || !creditCardInfo.expiry || !creditCardInfo.cvv)) {
             alert("Please fill in your credit card details.");
             return;
         }
-
+    
         const orderData = {
             orderId,
             toyType: toy,
@@ -168,12 +167,15 @@ const CustomOrder = () => {
             userId: "fakeUserId123", // Use a fake user ID until the user model is implemented
             customerInfo // Include customerInfo in the request
         };
-
+    
         try {
             const response = await axios.post("http://localhost:5555/api/customorders", orderData);
             setSuccessMessage("Order placed successfully!");
             setErrorMessage("");
             console.log("Order saved:", response.data);
+    
+            // Navigate to the delivery-detail page with the orderId
+            window.location.href = `/delivery-detail/${orderId}`;
         } catch (error) {
             setErrorMessage("Failed to place the order. Please try again.");
             setSuccessMessage("");
