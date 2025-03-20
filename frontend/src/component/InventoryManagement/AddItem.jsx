@@ -96,7 +96,7 @@ const AddItemForm = () => {
         },
       });
       alert('Item added successfully!');
-      navigate('/dashboard/senura');
+      navigate('/dashboard/inventory');
     } catch (error) {
       setError('Failed to add item.');
       console.error('Error adding item:', error);

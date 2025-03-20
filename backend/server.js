@@ -22,12 +22,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 const orderRoutes = require('./routes/Orders.js');
-const deliveryRequestRoutes = require('./routes/deliveryRequests.js');
-const driverRoutes = require('./routes/drivers.js');
 
 app.use('/api', orderRoutes);
-app.use('/api', deliveryRequestRoutes);
-app.use('/api', driverRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

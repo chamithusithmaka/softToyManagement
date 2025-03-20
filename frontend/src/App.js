@@ -29,6 +29,25 @@ import OrderList from './component/orderManagement/OrderList';
 import ItemList from './component/orderManagement/InventoryItems';
 import OrderDetails from './component/orderManagement/OrderDetails';
 
+//home
+import HomePage from './component/home/HomePage';
+
+
+//order costomize 
+import CustomOrder from './component/constomizeOrder/CustomOrder';
+import MyCostomizeOrders from "./component/constomizeOrder/myCostomizeOrders";
+import CusotomOrderDetails from "./component/constomizeOrder/CustomOrderDetails";
+import UpdateOrder from './component/constomizeOrder/UpdateOrder';
+import AllCustomOrders from "./component/constomizeOrder/AllCustomOrders";
+import CusOrderDetails from "./component/constomizeOrder/OrderDetails";
+import ViewDetail from './component/constomizeOrder/viewDetail';
+
+import CusOnDeliveryOrders from './component/constomizeOrder/CusOnDeliveryOrders';
+import CusPendingOrders from './component/constomizeOrder/CusPendingOrders';
+import CusCancelledOrders from './component/constomizeOrder/CusCancelledOrders';
+import CusCompletedOrders from './component/constomizeOrder/CusCompletedOrders';
+import CustomOrderReport from './component/constomizeOrder/CustomOrderReport';
+import DeliveryDetail from './component/constomizeOrder/DeliveryDetail';
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -62,6 +81,21 @@ function App() {
           <Route path="/inventory" element ={<ItemList />}/>
           <Route path="/orderlist" element={<OrderList />}/>
           <Route path="/orders/:orderId" element={<OrderDetails />} />
+
+          <Route path="/delivery-detail/:orderId" element={<DeliveryDetail />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/customize-order" element={<CustomOrder />} />
+          <Route path="/my-customize-order" element={<MyCostomizeOrders />} />
+          <Route path="/order-details/:orderId" element={<CusotomOrderDetails />} />
+          <Route path="/update-order/:orderId" element={<UpdateOrder />} />
+          <Route path="/all-custom-orders" element={<AllCustomOrders />} />
+          <Route path="/custom-orders/:orderId" element={<CusOrderDetails />} />
+          <Route path="/admin-order-details/:orderId" element={<ViewDetail />} />
+          <Route path="/cuson-delivery" element={<CusOnDeliveryOrders />} />
+          <Route path="/cuspending" element={<CusPendingOrders />} />
+          <Route path="/cuscancelled" element={<CusCancelledOrders />} />
+          <Route path="/cuscompleted" element={<CusCompletedOrders />} />
+          <Route path="/custom-order-report" element={<CustomOrderReport />} />
         </Routes>
       </div>
     </Router>
