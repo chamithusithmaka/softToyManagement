@@ -11,6 +11,7 @@ const ItemDetails = () => {
   const [updatedItem, setUpdatedItem] = useState({}); // For handling updates
   const [categories, setCategories] = useState([]); // To store available categories
   const [formErrors, setFormErrors] = useState({}); // For storing validation errors
+  const [photo, setPhoto] = useState(null); // For storing the new photo file
 
   // Fetch item details and available categories
   useEffect(() => {
@@ -64,11 +65,32 @@ const ItemDetails = () => {
     if (!validateForm()) return; // Only proceed if the form is valid
 
     try {
-      await axios.put(`http://localhost:5555/inventory-items/${id}`, updatedItem);
+      const formData = new FormData();
+      formData.append("name", updatedItem.name);
+      formData.append("code", updatedItem.code);
+      formData.append("companyName", updatedItem.companyName);
+      formData.append("description", updatedItem.description);
+      formData.append("qty", updatedItem.qty);
+      formData.append("buyingPrice", updatedItem.buyingPrice);
+      formData.append("price", updatedItem.price);
+      formData.append("category", updatedItem.category?._id || "");
+
+      // Append the photo file if a new one is selected
+      if (photo) {
+        formData.append("photo", photo);
+      }
+
+      const response = await axios.put(`http://localhost:5555/inventory-items/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       alert("Item updated successfully");
       setShowModal(false); // Close the modal after successful update
-      navigate(`/items/${id}`); // Refresh item details page after update
+      setItem(response.data); // Update the item details with the response
     } catch (error) {
+      console.error("Error updating item:", error);
       alert("Error updating item");
     }
   };
@@ -83,6 +105,10 @@ const ItemDetails = () => {
     const selectedCategory = categories.find((cat) => cat._id === e.target.value);
     setUpdatedItem({ ...updatedItem, category: selectedCategory });
     setFormErrors({ ...formErrors, category: "" }); // Clear category error
+  };
+
+  const handlePhotoChange = (e) => {
+    setPhoto(e.target.files[0]); // Store the selected photo file
   };
 
   if (error) return <div className="text-danger text-center mt-4">{error}</div>;
@@ -231,6 +257,15 @@ const ItemDetails = () => {
                       ))}
                     </select>
                     {formErrors.category && <div className="invalid-feedback">{formErrors.category}</div>}
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Photo</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      onChange={handlePhotoChange}
+                    />
                   </div>
                 </form>
               </div>
