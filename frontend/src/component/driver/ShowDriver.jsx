@@ -134,7 +134,7 @@ const ShowDrivers = () => {
                                     <label className="form-label">License No</label>
                                     <input type="text" className="form-control" name="licenseNo" value={selectedDriver.licenseNo} onChange={(e) => setSelectedDriver({ ...selectedDriver, licenseNo: e.target.value })} required />
                                 </div>
-                                <button type="submit" className="btn btn-success">Update Driver</button>
+                                <button type="submit" className="btn btn-primary">Update Driver</button>
                             </form>
                         </div>
                     )}
