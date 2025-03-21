@@ -21,7 +21,7 @@ const HomePage = () => {
                   style={{ backgroundColor: "#FFD700", color: "#5D5D5D" }}>
               Browse Store
             </Link>
-            <Link to="/customize" className="btn btn-lg px-4 py-3 btn-outline-light rounded-pill">
+            <Link to="/customize-order" className="btn btn-lg px-4 py-3 btn-outline-light rounded-pill">
               Customize Now
             </Link>
           </div>

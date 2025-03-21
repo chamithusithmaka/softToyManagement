@@ -42,7 +42,9 @@ const categories = require('./routes/Catagory.js');
 const uploadRoutes = require('./routes/uploadRoutes.js');
 const storeItemRoutes = require('./routes/storeItemRoutes.js');
 const orderRoutes = require('./routes/Orders.js');
-const customizeOrder = require("./routes/customizeOrderRoute.js");  // Adjust path as needed
+const customizeOrder = require("./routes/customizeOrderRoute.js");
+const deliveryRoutes = require("./routes/deliveryRoutes.js");
+const driverRoutes = require("./routes/driverRoutes.js");  // Adjust path as needed
 
 app.use(inventory);
 app.use(categories);
@@ -50,6 +52,8 @@ app.use(uploadRoutes);
 app.use('/store-items', storeItemRoutes);
 app.use('/api', orderRoutes);
 app.use("/api", customizeOrder);
+app.use("/api", deliveryRoutes);
+app.use("/api", driverRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
