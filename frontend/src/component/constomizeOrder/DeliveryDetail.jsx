@@ -51,6 +51,7 @@ const DeliveryRequest = () => {
             });
 
             setSuccessMessage("Delivery request submitted successfully!");
+            window.location.href="/my-customize-order";
             setErrorMessage("");
             console.log("Response:", response.data);
         } catch (error) {
