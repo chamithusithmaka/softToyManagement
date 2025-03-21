@@ -48,6 +48,17 @@ import CusCancelledOrders from './component/constomizeOrder/CusCancelledOrders';
 import CusCompletedOrders from './component/constomizeOrder/CusCompletedOrders';
 import CustomOrderReport from './component/constomizeOrder/CustomOrderReport';
 import DeliveryDetail from './component/constomizeOrder/DeliveryDetail';
+
+//Delivery routes
+import AdminDeliveries from './component/delivery/AdminDeliveries';
+
+//Driver routes
+import AddDriver from './component/driver/AddDriver';
+import DeleteDriver from './component/driver/DeleteDriver';
+import ShowDrivers from './component/driver/ShowDriver';
+import UpdateDriver from './component/driver/UpdateDriver';
+import DriversReport from './component/driver/DriverReports';
+
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -96,6 +107,14 @@ function App() {
           <Route path="/cuscancelled" element={<CusCancelledOrders />} />
           <Route path="/cuscompleted" element={<CusCompletedOrders />} />
           <Route path="/custom-order-report" element={<CustomOrderReport />} />
+
+          <Route path="/admin-deliveries" element={<AdminDeliveries />} />
+
+          <Route path="/drivers/add" element={<AddDriver />} />
+          <Route path="/drivers" element={<ShowDrivers />} />
+          <Route path="/drivers/update/:id" element={<UpdateDriver />} />
+          <Route path="/drivers/delete/:id" element={<DeleteDriver />} />
+          <Route path="/drivers/reports" element={<DriversReport />} />
         </Routes>
       </div>
     </Router>
