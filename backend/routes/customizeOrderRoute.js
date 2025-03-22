@@ -2,6 +2,26 @@ const express = require("express");
 const Order = require("../models/costomizeOrder"); // Adjust path as needed
 const router = express.Router();
 
+
+
+// Route to delete an order by orderId
+router.delete("/custom-orders/delete-by-orderId/:orderId", async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        // Find and delete the order by orderId
+        const deletedOrder = await Order.findOneAndDelete({ orderId });
+
+        if (!deletedOrder) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        res.status(200).json({ message: "Order deleted successfully", deletedOrder });
+    } catch (error) {
+        console.error("Error deleting order:", error);
+        res.status(500).json({ message: "Error deleting order", error: error.message });
+    }
+});
 // Route to create a new custom order
 router.post("/customorders", async (req, res) => {
     try {

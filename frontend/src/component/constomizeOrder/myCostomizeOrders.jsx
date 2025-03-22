@@ -58,9 +58,10 @@ const MyCostomizeOrders = () => {
     const handleDeleteOrder = async (orderId) => {
         if (window.confirm("Are you sure you want to delete this order?")) {
             try {
-                await axios.delete(`http://localhost:5555/api/costomorders/${orderId}`);
+                // Use the correct delete route
+                await axios.delete(`http://localhost:5555/api/custom-orders/delete-by-orderId/${orderId}`);
                 setSuccessMessage("Order deleted successfully!");
-                setOrders(orders.filter((order) => order._id !== orderId)); // Remove the deleted order from the list
+                setOrders(orders.filter((order) => order.orderId !== orderId)); // Remove the deleted order from the list
             } catch (error) {
                 console.error("Error deleting order:", error);
                 setErrorMessage("Failed to delete the order. Please try again.");
@@ -116,7 +117,7 @@ const MyCostomizeOrders = () => {
                                             {order.deliveryStatus === "Cancelled" && (
                                                 <button
                                                     className="btn btn-danger btn-sm"
-                                                    onClick={() => handleDeleteOrder(order._id)}
+                                                    onClick={() => handleDeleteOrder(order.orderId)}
                                                 >
                                                     Delete
                                                 </button>
