@@ -21,31 +21,11 @@ const CustomOrder = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [showPaymentModal, setShowPaymentModal] = useState(false); // State to control modal visibility
-    const [fabricOptions, setFabricOptions] = useState([]); // Store fabric options
-    const [accessoryOptions, setAccessoryOptions] = useState([]); // Store accessory options
     const [error, setError] = useState(""); // State to store error messages
     // Auto-generate order ID
     useEffect(() => {
-        const randomNum = Math.floor(1 + Math.random() * 99999).toString().padStart(3, "0");
+        const randomNum = Math.floor(1 + Math.random() * 999).toString().padStart(3, "0");
         setOrderId(`ORDER${randomNum}`);
-    }, []);
-
-    useEffect(() => {
-        const fetchOptions = async () => {
-            try {
-                // Fetch fabric options
-                const fabricResponse = await axios.get("http://localhost:5555/inventory-items/category/Fabric");
-                setFabricOptions(fabricResponse.data.map(item => item.name));
-
-                // Fetch accessory options
-                const accessoryResponse = await axios.get("http://localhost:5555/inventory-items/category/Accessories");
-                setAccessoryOptions(accessoryResponse.data.map(item => item.name));
-            } catch (error) {
-                console.error("Error fetching options:", error);
-            }
-        };
-
-        fetchOptions();
     }, []);
 
     // Calculate price dynamically
@@ -296,9 +276,8 @@ const CustomOrder = () => {
                                     <label className="form-label">Fabric:</label>
                                     <select className="form-select" onChange={(e) => setFabric(e.target.value)} required>
                                         <option value="">Select</option>
-                                        {fabricOptions.map((fabric, index) => (
-                                            <option key={index} value={fabric}>{fabric}</option>
-                                        ))}
+                                        <option value="plush">Plush</option>
+                                        <option value="cotton">Cotton</option>
                                     </select>
                                 </div>
                                 <div className="col-md-6 mb-3">
@@ -323,13 +302,13 @@ const CustomOrder = () => {
     
                             <hr />
     
-                             <div className="row">
+                            <div className="row">
                                 {/* Accessories */}
                                 <div className="col-md-12 mb-3">
                                     <label className="form-label">Accessories:</label>
                                     <div className="d-flex flex-wrap">
-                                        {accessoryOptions.map((accessory, index) => (
-                                            <div className="form-check me-3" key={index}>
+                                        {["clothing", "bow", "hat", "lights", "sound"].map((accessory) => (
+                                            <div className="form-check me-3" key={accessory}>
                                                 <input
                                                     className="form-check-input"
                                                     type="checkbox"
