@@ -85,7 +85,6 @@ const MyCostomizeOrders = () => {
                                 <th>Toy Type</th>
                                 <th>Quantity</th>
                                 <th>Total Price (LKR)</th>
-                                <th>Status</th>
                                 <th>Delivery Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -98,7 +97,6 @@ const MyCostomizeOrders = () => {
                                         <td>{order.toyType}</td>
                                         <td>{order.quantity}</td>
                                         <td>{order.totalPrice !== undefined ? order.totalPrice : "N/A"}</td>
-                                        <td>{order.status}</td>
                                         <td>{order.deliveryStatus}</td>
                                         <td>
                                             <button
@@ -107,7 +105,7 @@ const MyCostomizeOrders = () => {
                                             >
                                                 View
                                             </button>
-                                            {order.status === "Pending" && (
+                                            {order.deliveryStatus !== "Cancelled" && (
                                                 <button
                                                     className="btn btn-warning btn-sm me-2"
                                                     onClick={() => handleUpdateOrder(order._id)}
@@ -115,7 +113,7 @@ const MyCostomizeOrders = () => {
                                                     Update
                                                 </button>
                                             )}
-                                            {order.status === "Cancelled" && (
+                                            {order.deliveryStatus === "Cancelled" && (
                                                 <button
                                                     className="btn btn-danger btn-sm"
                                                     onClick={() => handleDeleteOrder(order._id)}
@@ -128,7 +126,7 @@ const MyCostomizeOrders = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="7" className="text-center">
+                                    <td colSpan="6" className="text-center">
                                         No orders found.
                                     </td>
                                 </tr>
