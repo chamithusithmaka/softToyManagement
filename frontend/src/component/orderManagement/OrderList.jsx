@@ -24,7 +24,7 @@ function OrderList() {
 
     useEffect(() => {
         const result = orders.filter(order =>
-            order.customerInfo.name.toLowerCase().includes(searchQuery.toLowerCase())
+            order.customerInfo?.name?.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredOrders(result);
     }, [searchQuery, orders]);
@@ -48,11 +48,11 @@ function OrderList() {
 
     return (
         <div className="d-flex">
-      {/* Sidebar */}
-      <ManagerHeader />
+            {/* Sidebar */}
+            <ManagerHeader />
 
-      {/* Main Content */}
-      <div className="container-fluid" style={{ marginLeft: '16rem' }}>
+            {/* Main Content */}
+            <div className="container-fluid" style={{ marginLeft: '16rem' }}>
                 <h2 className="fw-bold mb-4">All Orders</h2>
                 <div className="mb-4">
                     <div className="position-relative">
@@ -83,14 +83,18 @@ function OrderList() {
                             <tbody>
                                 {filteredOrders.map(order => (
                                     <tr key={order._id}>
-                                        <td>{order.customerInfo.name}</td>
+                                        <td>{order.customerInfo?.name || 'N/A'}</td>
                                         <td className={getStatusClass(order.status)}>{order.status}</td>
                                         <td>
-                                            {order.items.map(item => (
-                                                <div key={item._id}>
-                                                    {item.name} x {item.quantity}
-                                                </div>
-                                            ))}
+                                            {order.items.length > 0 ? (
+                                                order.items.map(item => (
+                                                    <div key={item._id}>
+                                                        {item.name} x {item.quantity}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <span className="text-muted">No items</span>
+                                            )}
                                         </td>
                                         <td>
                                             LKR: {order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}

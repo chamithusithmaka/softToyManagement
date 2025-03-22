@@ -64,7 +64,7 @@ function SalesSummary() {
         // Add Orders Breakdown table
         const tableData = orders.map(order => [
             order._id,
-            order.customerInfo.name,
+            order.customerInfo?.name || 'N/A', // Validate customerInfo and name
             order.status,
             order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2),
         ]);
@@ -80,11 +80,11 @@ function SalesSummary() {
 
     return (
         <div className="d-flex">
-      {/* Sidebar */}
-      <ManagerHeader />
+            {/* Sidebar */}
+            <ManagerHeader />
 
-      {/* Main Content */}
-      <div className="container-fluid" style={{ marginLeft: '16rem' }}>
+            {/* Main Content */}
+            <div className="container-fluid" style={{ marginLeft: '16rem' }}>
                 <h2 className="fw-bold mb-4">Online Sales Summary</h2>
                 <div className="row mb-4">
                     {/* Total Revenue Card */}
@@ -150,7 +150,7 @@ function SalesSummary() {
                         <tbody>
                             {orders.map(order => (
                                 <tr key={order._id}>
-                                    <td>{order.customerInfo.name}</td>
+                                    <td>{order.customerInfo?.name || 'N/A'}</td> {/* Validate customerInfo */}
                                     <td>
                                         <span
                                             className={`badge ${
