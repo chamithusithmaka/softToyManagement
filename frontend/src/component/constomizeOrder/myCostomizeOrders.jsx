@@ -54,7 +54,6 @@ const MyCostomizeOrders = () => {
         navigate(`/update-order/${orderId}`); // Navigate to the update order page
     };
 
-    // Handle delete button click
     const handleDeleteOrder = async (orderId) => {
         if (window.confirm("Are you sure you want to delete this order? This action cannot be undone.")) {
             try {
@@ -62,13 +61,17 @@ const MyCostomizeOrders = () => {
                 console.log("Delete order response:", response.data);
                 setSuccessMessage("Order deleted successfully!");
                 setOrders(orders.filter((order) => order.orderId !== orderId)); // Remove the deleted order from the list
+    
+                // Navigate back to /my-customize-order after a short delay
+                setTimeout(() => {
+                    navigate("/my-customize-order");
+                }, 1000); // Optional delay for better user experience
             } catch (error) {
                 console.error("Error deleting order:", error);
                 setErrorMessage("Failed to delete the order. Please try again.");
             }
         }
     };
-
     return (
         <div>
             <Header />
