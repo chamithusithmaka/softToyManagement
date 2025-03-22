@@ -52,6 +52,17 @@ const AdminDeliveries = () => {
         }
     };
 
+    const deleteDelivery = async (deliveryId) => {
+        if (window.confirm('Are you sure you want to delete this delivery?')) {
+            try {
+                await axios.delete(`http://localhost:5555/api/delivery/${deliveryId}`);
+                fetchDeliveries();
+            } catch (error) {
+                console.error('Error deleting delivery', error);
+            }
+        }
+    };
+
     const filteredDeliveries = deliveries.filter(delivery =>
         delivery.orderId.includes(searchTerm) ||
         delivery.userId.includes(searchTerm) ||
@@ -162,6 +173,11 @@ const AdminDeliveries = () => {
                                         onClick={() => updateStatus(delivery._id)} 
                                         className="btn btn-warning btn-rounded m-2 hover:bg-yellow-800">
                                         Update
+                                    </button>
+                                    <button 
+                                        onClick={() => deleteDelivery(delivery._id)} 
+                                        className="btn btn-danger btn-rounded m-2 hover:bg-red-500">
+                                        Delete
                                     </button>
                                 </td>
                             </tr>
