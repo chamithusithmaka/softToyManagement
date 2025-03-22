@@ -6,6 +6,8 @@ import { useParams, useNavigate } from "react-router-dom";
 const UpdateOrder = () => {
     const { orderId } = useParams(); // Get the order ID from the URL
     const [order, setOrder] = useState(null);
+    const [fabricOptions, setFabricOptions] = useState([]); // Store fabric options
+    const [accessoryOptions, setAccessoryOptions] = useState([]); // Store accessory options
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
@@ -25,6 +27,25 @@ const UpdateOrder = () => {
         fetchOrderDetails();
     }, [orderId]);
 
+    // Fetch fabric and accessory options
+    useEffect(() => {
+        const fetchOptions = async () => {
+            try {
+                // Fetch fabric options
+                const fabricResponse = await axios.get("http://localhost:5555/inventory-items/category/Fabric");
+                setFabricOptions(fabricResponse.data.map((item) => item.name));
+
+                // Fetch accessory options
+                const accessoryResponse = await axios.get("http://localhost:5555/inventory-items/category/Accessories");
+                setAccessoryOptions(accessoryResponse.data.map((item) => item.name));
+            } catch (error) {
+                console.error("Error fetching options:", error);
+            }
+        };
+
+        fetchOptions();
+    }, []);
+
     // Calculate total price dynamically
     useEffect(() => {
         if (order) {
@@ -39,8 +60,7 @@ const UpdateOrder = () => {
             if (order.size) price *= sizeMultipliers[order.size];
 
             // Fabric cost
-            const fabricPrices = { plush: 800, cotton: 500 };
-            if (order.fabric) price += fabricPrices[order.fabric];
+            if (order.fabric) price += 800; // Example fixed cost for fabric
 
             // Color cost
             if (order.color === "multiple") price += 1000;
@@ -51,7 +71,7 @@ const UpdateOrder = () => {
 
             // Accessories cost
             const accessoryPrices = { clothing: 1000, bow: 500, hat: 700, lights: 1500, sound: 2000 };
-            order.accessories.forEach((acc) => (price += accessoryPrices[acc]));
+            order.accessories.forEach((acc) => (price += accessoryPrices[acc] || 0));
 
             // Multiply by quantity
             price *= order.quantity;
@@ -160,8 +180,11 @@ const UpdateOrder = () => {
                                     required
                                 >
                                     <option value="">Select</option>
-                                    <option value="plush">Plush</option>
-                                    <option value="cotton">Cotton</option>
+                                    {fabricOptions.map((fabric, index) => (
+                                        <option key={index} value={fabric}>
+                                            {fabric}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
 
@@ -195,50 +218,18 @@ const UpdateOrder = () => {
                             {/* Accessories */}
                             <div className="col-md-12 mb-3">
                                 <label className="form-label">Accessories:</label>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        checked={order.accessories.includes("clothing")}
-                                        onChange={() => handleAccessoryChange("clothing")}
-                                    />
-                                    <label className="form-check-label">Clothing</label>
-                                </div>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        checked={order.accessories.includes("bow")}
-                                        onChange={() => handleAccessoryChange("bow")}
-                                    />
-                                    <label className="form-check-label">Bow</label>
-                                </div>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        checked={order.accessories.includes("hat")}
-                                        onChange={() => handleAccessoryChange("hat")}
-                                    />
-                                    <label className="form-check-label">Hat</label>
-                                </div>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        checked={order.accessories.includes("lights")}
-                                        onChange={() => handleAccessoryChange("lights")}
-                                    />
-                                    <label className="form-check-label">Lights</label>
-                                </div>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        checked={order.accessories.includes("sound")}
-                                        onChange={() => handleAccessoryChange("sound")}
-                                    />
-                                    <label className="form-check-label">Sound Module</label>
+                                <div className="d-flex flex-wrap">
+                                    {accessoryOptions.map((accessory, index) => (
+                                        <div className="form-check me-3" key={index}>
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                checked={order.accessories.includes(accessory)}
+                                                onChange={() => handleAccessoryChange(accessory)}
+                                            />
+                                            <label className="form-check-label">{accessory}</label>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 

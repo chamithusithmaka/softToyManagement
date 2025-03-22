@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer'); // Ensure multer is imported
 const StoreItem = require('../models/StoreItem.js'); // Adjust the path if necessary
+const Category = require('../models/Category.js'); // Adjust the path if necessary
 
 const router = express.Router();
 
@@ -117,5 +118,27 @@ router.put('/inventory-items/:id', upload.single('photo'), async (req, res) => {
       res.status(500).json({ message: 'Error updating item', error });
     }
   });
+
+// Route to fetch items by category name
+router.get('/inventory-items/category/:name', async (req, res) => {
+  const { name } = req.params;
+
+  try {
+      // Find the category by name
+      const category = await Category.findOne({ name });
+
+      if (!category) {
+          return res.status(404).json({ message: "Category not found" });
+      }
+
+      // Find items that belong to the category
+      const items = await StoreItem.find({ category: category._id }).populate('category');
+
+      res.status(200).json(items);
+  } catch (error) {
+      console.error("Error fetching items by category name:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 module.exports = router;
