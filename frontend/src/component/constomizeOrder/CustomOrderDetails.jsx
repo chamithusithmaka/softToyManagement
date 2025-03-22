@@ -6,14 +6,29 @@ import { useParams } from "react-router-dom";
 const CustomOrderDetails = () => {
     const { orderId } = useParams(); // Get the order ID from the URL
     const [order, setOrder] = useState(null);
+    const [deliveryStatus, setDeliveryStatus] = useState(""); // Store delivery status
     const [errorMessage, setErrorMessage] = useState("");
 
-    // Fetch order details by order ID
+    // Fetch order details and delivery status by order ID
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
+                // Fetch order details
                 const response = await axios.get(`http://localhost:5555/api/costomorders/${orderId}`);
-                setOrder(response.data);
+                const fetchedOrder = response.data;
+
+                // Fetch delivery status for the order
+                try {
+                    const statusResponse = await axios.get(`http://localhost:5555/api/delivery/status/${fetchedOrder.orderId}`);
+                    const fetchedDeliveryStatus = statusResponse.data.status;
+
+                    // Set the order and delivery status
+                    setOrder(fetchedOrder);
+                    setDeliveryStatus(fetchedDeliveryStatus);
+                } catch (statusError) {
+                    console.error(`Error fetching delivery status for order ${fetchedOrder.orderId}:`, statusError);
+                    setDeliveryStatus("N/A"); // Default to "N/A" if status fetch fails
+                }
             } catch (error) {
                 console.error("Error fetching order details:", error);
                 setErrorMessage("Failed to fetch order details. Please try again later.");
@@ -59,15 +74,17 @@ const CustomOrderDetails = () => {
                                     <p><strong>Shipping Method:</strong> {order.shippingMethod}</p>
                                     <p><strong>Status:</strong> 
                                         <span className={`badge ${
-                                            order.status === "Completed"
+                                            deliveryStatus === "Delivered"
                                                 ? "bg-success"
-                                                : order.status === "Pending"
+                                                : deliveryStatus === "Out for Delivery"
+                                                ? "bg-info text-dark"
+                                                : deliveryStatus === "Pending"
                                                 ? "bg-warning text-dark"
-                                                : order.status === "Cancelled"
+                                                : deliveryStatus === "Cancelled"
                                                 ? "bg-danger"
-                                                : "bg-info text-dark"
+                                                : "bg-secondary"
                                         } ms-2`}>
-                                            {order.status}
+                                            {deliveryStatus || "N/A"}
                                         </span>
                                     </p>
                                 </div>

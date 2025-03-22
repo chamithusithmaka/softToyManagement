@@ -2,8 +2,11 @@ const express = require("express");
 const Order = require("../models/costomizeOrder"); // Adjust path as needed
 const router = express.Router();
 
+// Route to create a new custom order
 router.post("/customorders", async (req, res) => {
     try {
+        console.log("Request received to create a new order:", req.body);
+
         const {
             orderId, toyType, size, fabric, color, message, accessories,
             deliveryDate, quantity, totalPrice, paymentMethod, shippingMethod, userId, customerInfo, creditCardInfo
@@ -11,8 +14,28 @@ router.post("/customorders", async (req, res) => {
 
         // Validate required fields
         if (!orderId || !toyType || !size || !fabric || !color || !deliveryDate || !quantity || !totalPrice || !paymentMethod || !shippingMethod || !userId || !customerInfo) {
+            console.log("Validation failed: Missing required fields");
             return res.status(400).json({ message: "Validation failed: Missing required fields" });
         }
+
+        console.log("Creating a new order with the following details:");
+        console.log({
+            orderId,
+            toyType,
+            size,
+            fabric,
+            color,
+            message,
+            accessories,
+            deliveryDate,
+            quantity,
+            totalPrice,
+            paymentMethod,
+            shippingMethod,
+            userId,
+            customerInfo,
+            creditCardInfo: paymentMethod === "credit-card" ? creditCardInfo : null
+        });
 
         const newOrder = new Order({
             orderId,
@@ -32,14 +55,16 @@ router.post("/customorders", async (req, res) => {
             creditCardInfo: paymentMethod === "credit-card" ? creditCardInfo : null
         });
 
+        console.log("Saving the new order to the database...");
         const savedOrder = await newOrder.save();
+        console.log("Order saved successfully:", savedOrder);
+
         res.status(201).json(savedOrder);
     } catch (error) {
-        console.error("Error creating the order:", error);
-        res.status(500).json({ message: "Error creating the order", error });
+        console.error("Error creating the order:", error.message);
+        res.status(500).json({ message: "Error creating the order", error: error.message });
     }
 });
-
 // Get all orders
 router.get("/costomorders", async (req, res) => {
     try {
@@ -91,18 +116,22 @@ router.patch("/costomorders/:id/status", async (req, res) => {
         res.status(500).json({ message: "Error updating order status", error });
     }
 });
-
-// Delete order by ID
-router.delete("/costomorders/:id", async (req, res) => {
+// Route to delete an order by orderId
+router.delete("/custom-orders/delete-by-orderId/:orderId", async (req, res) => {
     try {
-        const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+        const { orderId } = req.params;
+
+        // Find and delete the order by orderId
+        const deletedOrder = await Order.findOneAndDelete({ orderId });
+
         if (!deletedOrder) {
             return res.status(404).json({ message: "Order not found" });
         }
-        res.status(200).json({ message: "Order deleted successfully" });
+
+        res.status(200).json({ message: "Order deleted successfully", deletedOrder });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error deleting order", error });
+        console.error("Error deleting order:", error);
+        res.status(500).json({ message: "Error deleting order", error: error.message });
     }
 });
 

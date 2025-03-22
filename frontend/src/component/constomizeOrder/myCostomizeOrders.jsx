@@ -17,7 +17,24 @@ const MyCostomizeOrders = () => {
         const fetchOrders = async () => {
             try {
                 const response = await axios.get(`http://localhost:5555/api/costomorders?userId=${userId}`);
-                setOrders(response.data);
+                const fetchedOrders = response.data;
+
+                // Fetch delivery status for each order
+                const ordersWithStatus = await Promise.all(
+                    fetchedOrders.map(async (order) => {
+                        try {
+                            const statusResponse = await axios.get(
+                                `http://localhost:5555/api/delivery/status/${order.orderId}`
+                            );
+                            return { ...order, deliveryStatus: statusResponse.data.status };
+                        } catch (error) {
+                            console.error(`Error fetching delivery status for order ${order.orderId}:`, error);
+                            return { ...order, deliveryStatus: "N/A" }; // Default to "N/A" if status fetch fails
+                        }
+                    })
+                );
+
+                setOrders(ordersWithStatus);
             } catch (error) {
                 console.error("Error fetching orders:", error);
                 setErrorMessage("Failed to fetch orders. Please try again later.");
@@ -69,6 +86,7 @@ const MyCostomizeOrders = () => {
                                 <th>Quantity</th>
                                 <th>Total Price (LKR)</th>
                                 <th>Status</th>
+                                <th>Delivery Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -81,6 +99,7 @@ const MyCostomizeOrders = () => {
                                         <td>{order.quantity}</td>
                                         <td>{order.totalPrice !== undefined ? order.totalPrice : "N/A"}</td>
                                         <td>{order.status}</td>
+                                        <td>{order.deliveryStatus}</td>
                                         <td>
                                             <button
                                                 className="btn btn-primary btn-sm me-2"
@@ -109,7 +128,7 @@ const MyCostomizeOrders = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6" className="text-center">
+                                    <td colSpan="7" className="text-center">
                                         No orders found.
                                     </td>
                                 </tr>

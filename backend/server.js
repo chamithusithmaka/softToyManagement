@@ -8,7 +8,7 @@ const multer = require('multer');
 const app = express();
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://sithmaka:sithmaka1122@cluster.pvqvoqf.mongodb.net/petcare_DB?retryWrites=true&w=majority&appName=Cluster', { 
+mongoose.connect('mongodb+srv://admin:anysZ1C3MjUWFojv@cluster0.pe8lg.mongodb.net/', { 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
 })
