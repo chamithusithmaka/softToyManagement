@@ -54,24 +54,20 @@ const MyCostomizeOrders = () => {
         navigate(`/update-order/${orderId}`); // Navigate to the update order page
     };
 
+    // Handle delete button click
     const handleDeleteOrder = async (orderId) => {
-        if (window.confirm("Are you sure you want to delete this order? This action cannot be undone.")) {
+        if (window.confirm("Are you sure you want to delete this order?")) {
             try {
-                const response = await axios.delete(`http://localhost:5555/api/custom-orders/delete-by-orderId/${orderId}`);
-                console.log("Delete order response:", response.data);
+                await axios.delete(`http://localhost:5555/api/costomorders/${orderId}`);
                 setSuccessMessage("Order deleted successfully!");
-                setOrders(orders.filter((order) => order.orderId !== orderId)); // Remove the deleted order from the list
-    
-                // Navigate back to /my-customize-order after a short delay
-                setTimeout(() => {
-                    navigate("/my-customize-order");
-                }, 1000); // Optional delay for better user experience
+                setOrders(orders.filter((order) => order._id !== orderId)); // Remove the deleted order from the list
             } catch (error) {
                 console.error("Error deleting order:", error);
                 setErrorMessage("Failed to delete the order. Please try again.");
             }
         }
     };
+
     return (
         <div>
             <Header />
@@ -107,24 +103,26 @@ const MyCostomizeOrders = () => {
                                         <td>
                                             <button
                                                 className="btn btn-primary btn-sm me-2"
-                                                onClick={() => handleViewOrder(order.orderId)}
+                                                onClick={() => handleViewOrder(order._id)}
                                             >
                                                 View
                                             </button>
                                             {order.status === "Pending" && (
                                                 <button
                                                     className="btn btn-warning btn-sm me-2"
-                                                    onClick={() => handleUpdateOrder(order.orderId)}
+                                                    onClick={() => handleUpdateOrder(order._id)}
                                                 >
                                                     Update
                                                 </button>
                                             )}
-                                            <button
-                                                className="btn btn-danger btn-sm"
-                                                onClick={() => handleDeleteOrder(order.orderId)}
-                                            >
-                                                Delete
-                                            </button>
+                                            {order.status === "Cancelled" && (
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={() => handleDeleteOrder(order._id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
                                         </td>
                                     </tr>
                                 ))
