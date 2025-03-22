@@ -4,6 +4,56 @@ const Order = require("../models/Order"); // Fetch order details
 const Driver = require("../models/Driver"); // Fetch drivers
 const router = express.Router();
 
+
+// Route to update delivery status to "Cancelled" by orderId
+router.patch("/delivery/cancel/:orderId", async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+        // Find the delivery record by orderId
+        const delivery = await Delivery.findOne({ orderId });
+
+        if (!delivery) {
+            return res.status(404).json({ message: "Delivery record not found" });
+        }
+
+        // Check if the current status allows cancellation
+        if (delivery.status !== "Pending" && delivery.status !== "Out for Delivery") {
+            return res.status(400).json({ message: "Order cannot be cancelled at this stage" });
+        }
+
+        // Update the status to "Cancelled"
+        delivery.status = "Cancelled";
+        await delivery.save();
+
+        res.status(200).json({ message: "Delivery status updated to 'Cancelled'", delivery });
+    } catch (error) {
+        console.error("Error updating delivery status:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+
+// Route to fetch delivery status by orderId
+router.get("/delivery/status/:orderId", async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+        // Find the delivery record by orderId
+        const delivery = await Delivery.findOne({ orderId });
+
+        if (!delivery) {
+            return res.status(404).json({ message: "Delivery record not found" });
+        }
+
+        // Return the delivery status
+        res.status(200).json({ orderId: delivery.orderId, status: delivery.status });
+    } catch (error) {
+        console.error("Error fetching delivery status:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
 // Create a new delivery request
 router.post("/delivery", async (req, res) => {
     try {
@@ -90,6 +140,25 @@ router.delete("/delivery/:id", async (req, res) => {
         res.status(200).json({ message: "Delivery deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Error deleting delivery", error });
+    }
+});
+
+// Route to delete an order by orderId
+router.delete("/custom-orders/delete-by-orderId/:orderId", async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        // Find and delete the order by orderId
+        const deletedOrder = await Order.findOneAndDelete({ orderId });
+
+        if (!deletedOrder) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        res.status(200).json({ message: "Order deleted successfully", deletedOrder });
+    } catch (error) {
+        console.error("Error deleting order:", error);
+        res.status(500).json({ message: "Error deleting order", error: error.message });
     }
 });
 

@@ -25,25 +25,7 @@ function AdminSideBar() {
           </Link>
 
           {/* On Delivery Orders */}
-          <Link className="d-flex align-items-center text-dark text-decoration-none mb-3 p-2 rounded hover-bg-light" to="/cuson-delivery">
-            <FaClipboardList className="me-2" /> On Delivery Orders
-          </Link>
-
-          {/* Pending Orders */}
-          <Link className="d-flex align-items-center text-dark text-decoration-none mb-3 p-2 rounded hover-bg-light" to="/cuspending">
-            <FaTimesCircle className="me-2" /> Pending Orders
-          </Link>
-
-          {/* Cancelled Orders */}
-          <Link className="d-flex align-items-center text-dark text-decoration-none mb-3 p-2 rounded hover-bg-light" to="/cuscancelled">
-            <FaTimesCircle className="me-2" /> Cancelled Orders
-          </Link>
-
-          {/* Completed Orders */}
-          <Link className="d-flex align-items-center text-dark text-decoration-none mb-3 p-2 rounded hover-bg-light" to="/cuscompleted">
-            <FaCheckCircle className="me-2" /> Completed Orders
-          </Link>
-
+          {/* 
           {/* Sales Report */}
           <Link className="d-flex align-items-center text-dark text-decoration-none mb-3 p-2 rounded hover-bg-light" to="/custom-order-report">
             <FaChartLine className="me-2" /> Sales Report

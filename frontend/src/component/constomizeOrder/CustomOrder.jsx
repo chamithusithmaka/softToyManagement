@@ -377,7 +377,7 @@ const CustomOrder = () => {
                                         <option value="">Select</option>
                                         <option value="standard">Standard</option>
                                         <option value="express">Express</option>
-                                        <option value="international">International</option>
+                                        
                                     </select>
                                 </div>
                             </div>

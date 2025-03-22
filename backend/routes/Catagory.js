@@ -2,11 +2,18 @@ const express = require('express');
 const Category = require('../models/Category.js'); // Adjust the path if necessary
 
 const router = express.Router();
-
 // Create a new category
 router.post('/categories', async (req, res) => {
   try {
+    console.log("Request received to create a new category:", req.body);
+
     const { categoryCode, name, description } = req.body;
+
+    // Validate required fields
+    if (!categoryCode || !name || !description) {
+      console.log("Validation failed: Missing required fields");
+      return res.status(400).json({ error: "Validation failed: Missing required fields" });
+    }
 
     const newCategory = new Category({
       categoryCode,
@@ -14,9 +21,13 @@ router.post('/categories', async (req, res) => {
       description,
     });
 
+    console.log("Saving new category to the database...");
     await newCategory.save();
+    console.log("Category created successfully:", newCategory);
+
     res.status(201).json(newCategory);
   } catch (error) {
+    console.error("Error creating category:", error.message);
     res.status(500).json({ error: error.message });
   }
 });
