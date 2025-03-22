@@ -56,11 +56,12 @@ const MyCostomizeOrders = () => {
 
     // Handle delete button click
     const handleDeleteOrder = async (orderId) => {
-        if (window.confirm("Are you sure you want to delete this order?")) {
+        if (window.confirm("Are you sure you want to delete this order? This action cannot be undone.")) {
             try {
-                await axios.delete(`http://localhost:5555/api/costomorders/${orderId}`);
+                const response = await axios.delete(`http://localhost:5555/api/custom-orders/delete-by-orderId/${orderId}`);
+                console.log("Delete order response:", response.data);
                 setSuccessMessage("Order deleted successfully!");
-                setOrders(orders.filter((order) => order._id !== orderId)); // Remove the deleted order from the list
+                setOrders(orders.filter((order) => order.orderId !== orderId)); // Remove the deleted order from the list
             } catch (error) {
                 console.error("Error deleting order:", error);
                 setErrorMessage("Failed to delete the order. Please try again.");
@@ -103,26 +104,24 @@ const MyCostomizeOrders = () => {
                                         <td>
                                             <button
                                                 className="btn btn-primary btn-sm me-2"
-                                                onClick={() => handleViewOrder(order._id)}
+                                                onClick={() => handleViewOrder(order.orderId)}
                                             >
                                                 View
                                             </button>
                                             {order.status === "Pending" && (
                                                 <button
                                                     className="btn btn-warning btn-sm me-2"
-                                                    onClick={() => handleUpdateOrder(order._id)}
+                                                    onClick={() => handleUpdateOrder(order.orderId)}
                                                 >
                                                     Update
                                                 </button>
                                             )}
-                                            {order.status === "Cancelled" && (
-                                                <button
-                                                    className="btn btn-danger btn-sm"
-                                                    onClick={() => handleDeleteOrder(order._id)}
-                                                >
-                                                    Delete
-                                                </button>
-                                            )}
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDeleteOrder(order.orderId)}
+                                            >
+                                                Delete
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
