@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../home/HomeHeader"; // Import the HomeHeader component
 import { useParams } from "react-router-dom";
+import { FaTimesCircle } from "react-icons/fa";
 
 const CustomOrderDetails = () => {
     const { orderId } = useParams(); // Get the order ID from the URL
     const [order, setOrder] = useState(null);
     const [deliveryStatus, setDeliveryStatus] = useState(""); // Store delivery status
     const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
     // Fetch order details and delivery status by order ID
     useEffect(() => {
@@ -38,6 +40,24 @@ const CustomOrderDetails = () => {
         fetchOrderDetails();
     }, [orderId]);
 
+    // Handle cancel order
+    const handleCancelOrder = async () => {
+        console.log(`Attempting to cancel order with orderId: ${order.orderId}`);
+        if (window.confirm("Are you sure you want to cancel this order?")) {
+            try {
+                const response = await axios.patch(`http://localhost:5555/api/delivery/cancel/${order.orderId}`);
+                console.log("Cancel order response:", response.data);
+                setSuccessMessage(response.data.message || "Order cancelled successfully!");
+                setDeliveryStatus("Cancelled"); // Update the delivery status locally
+            } catch (error) {
+                console.error("Error cancelling order:", error);
+                setErrorMessage(
+                    error.response?.data?.message || "Failed to cancel the order. Please try again."
+                );
+            }
+        }
+    };
+
     return (
         <div>
             <Header />
@@ -45,11 +65,26 @@ const CustomOrderDetails = () => {
                 <h2 className="text-center mb-4">Order Details</h2>
 
                 {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+                {successMessage && <div className="alert alert-success">{successMessage}</div>}
 
                 {order ? (
                     <div className="card shadow-lg">
-                        <div className="card-header bg-primary text-white">
+                        <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                             <h5 className="mb-0">Order ID: {order.orderId}</h5>
+                            <div>
+                                {deliveryStatus === "Pending" ? (
+                                    <button
+                                        className="btn btn-warning btn-sm"
+                                        onClick={handleCancelOrder}
+                                    >
+                                        <FaTimesCircle className="me-1" /> Cancel
+                                    </button>
+                                ) : (
+                                    <button className="btn btn-secondary btn-sm" disabled>
+                                        Cannot Cancel
+                                    </button>
+                                )}
+                            </div>
                         </div>
                         <div className="card-body">
                             <div className="row">
