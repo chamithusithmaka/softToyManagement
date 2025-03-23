@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const MyCostomizeOrders = () => {
     const [orders, setOrders] = useState([]);
+    const [filteredOrders, setFilteredOrders] = useState([]); // State for filtered orders
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
@@ -34,7 +35,11 @@ const MyCostomizeOrders = () => {
                     })
                 );
 
-                setOrders(ordersWithStatus);
+                // Filter out orders with delivery status "N/A"
+                const validOrders = ordersWithStatus.filter(order => order.deliveryStatus !== "N/A");
+
+                setOrders(validOrders);
+                setFilteredOrders(validOrders); // Initialize filtered orders
             } catch (error) {
                 console.error("Error fetching orders:", error);
                 setErrorMessage("Failed to fetch orders. Please try again later.");
@@ -62,6 +67,7 @@ const MyCostomizeOrders = () => {
                 await axios.delete(`http://localhost:5555/api/custom-orders/delete-by-orderId/${orderId}`);
                 setSuccessMessage("Order deleted successfully!");
                 setOrders(orders.filter((order) => order.orderId !== orderId)); // Remove the deleted order from the list
+                setFilteredOrders(filteredOrders.filter((order) => order.orderId !== orderId)); // Update filtered orders
             } catch (error) {
                 console.error("Error deleting order:", error);
                 setErrorMessage("Failed to delete the order. Please try again.");
@@ -91,8 +97,8 @@ const MyCostomizeOrders = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.length > 0 ? (
-                                orders.map((order) => (
+                            {filteredOrders.length > 0 ? (
+                                filteredOrders.map((order) => (
                                     <tr key={order._id}>
                                         <td>{order.orderId}</td>
                                         <td>{order.toyType}</td>

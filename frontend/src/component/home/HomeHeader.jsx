@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaUser, FaStore, FaHome, FaTools } from "react-icons/fa";
+import { FaUser, FaStore, FaHome, FaTools, FaPalette } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Header = () => {
@@ -33,8 +33,8 @@ const Header = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/profile" className="nav-link text-white d-flex align-items-center">
-                <FaUser className="me-2" /> Profile
+              <Link to="/production-catalog" className="nav-link text-white d-flex align-items-center">
+                <FaPalette className="me-2" /> production catalog
               </Link>
             </li>
           </ul>

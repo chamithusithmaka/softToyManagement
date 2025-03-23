@@ -32,8 +32,11 @@ const AllCustomOrders = () => {
                     })
                 );
 
-                setOrders(ordersWithStatus);
-                setFilteredOrders(ordersWithStatus); // Initialize filtered orders
+                // Filter out orders with delivery status "N/A"
+                const validOrders = ordersWithStatus.filter(order => order.deliveryStatus !== "N/A");
+
+                setOrders(validOrders);
+                setFilteredOrders(validOrders); // Initialize filtered orders
             } catch (error) {
                 console.error("Error fetching orders:", error);
                 setErrorMessage("Failed to fetch orders. Please try again later.");

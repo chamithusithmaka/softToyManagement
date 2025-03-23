@@ -16,20 +16,39 @@ function CustomOrderReport() {
         const fetchCustomOrders = async () => {
             try {
                 const response = await axios.get("http://localhost:5555/api/costomorders");
-                const orders = response.data;
-                setOrders(orders);
+                const fetchedOrders = response.data;
+
+                // Fetch delivery status for each order
+                const ordersWithStatus = await Promise.all(
+                    fetchedOrders.map(async (order) => {
+                        try {
+                            const statusResponse = await axios.get(
+                                `http://localhost:5555/api/delivery/status/${order.orderId}`
+                            );
+                            return { ...order, deliveryStatus: statusResponse.data.status };
+                        } catch (error) {
+                            console.error(`Error fetching delivery status for order ${order.orderId}:`, error);
+                            return { ...order, deliveryStatus: "N/A" }; // Default to "N/A" if status fetch fails
+                        }
+                    })
+                );
+
+                // Filter out orders with delivery status "N/A"
+                const validOrders = ordersWithStatus.filter(order => order.deliveryStatus !== "N/A");
+
+                setOrders(validOrders);
 
                 // Calculate total revenue
-                const revenue = orders
-                    .filter((order) => order.status === "Completed")
+                const revenue = validOrders
+                    .filter((order) => order.deliveryStatus === "Completed")
                     .reduce((total, order) => total + order.totalPrice, 0);
                 setTotalRevenue(revenue.toFixed(2));
 
-                // Count orders by status
-                const pending = orders.filter((order) => order.status === "Pending").length;
-                const onDelivery = orders.filter((order) => order.status === "On Delivery").length;
-                const completed = orders.filter((order) => order.status === "Completed").length;
-                const cancelled = orders.filter((order) => order.status === "Cancelled").length;
+                // Count orders by delivery status
+                const pending = validOrders.filter((order) => order.deliveryStatus === "Pending").length;
+                const onDelivery = validOrders.filter((order) => order.deliveryStatus === "On Delivery").length;
+                const completed = validOrders.filter((order) => order.deliveryStatus === "Completed").length;
+                const cancelled = validOrders.filter((order) => order.deliveryStatus === "Cancelled").length;
 
                 setPendingOrders(pending);
                 setOnDeliveryOrders(onDelivery);
@@ -69,12 +88,12 @@ function CustomOrderReport() {
         const tableData = orders.map((order) => [
             order.orderId,
             order.customerInfo.name,
-            order.status,
+            order.deliveryStatus,
             order.totalPrice.toFixed(2),
         ]);
 
         autoTable(doc, {
-            head: [["Order ID", "Customer Name", "Status", "Total Price"]],
+            head: [["Order ID", "Customer Name", "Delivery Status", "Total Price"]],
             body: tableData,
             startY: 90,
         });
@@ -155,7 +174,7 @@ function CustomOrderReport() {
                             <tr>
                                 <th>Order ID</th>
                                 <th>Customer Name</th>
-                                <th>Status</th>
+                                <th>Delivery Status</th>
                                 <th>Total Price</th>
                             </tr>
                         </thead>
@@ -167,16 +186,16 @@ function CustomOrderReport() {
                                     <td>
                                         <span
                                             className={`badge ${
-                                                order.status === "Completed"
+                                                order.deliveryStatus === "Completed"
                                                     ? "bg-success"
-                                                    : order.status === "Pending"
+                                                    : order.deliveryStatus === "Pending"
                                                     ? "bg-warning text-dark"
-                                                    : order.status === "On Delivery"
+                                                    : order.deliveryStatus === "On Delivery"
                                                     ? "bg-info text-dark"
                                                     : "bg-danger"
                                             }`}
                                         >
-                                            {order.status}
+                                            {order.deliveryStatus}
                                         </span>
                                     </td>
                                     <td>LKR {order.totalPrice.toFixed(2)}</td>

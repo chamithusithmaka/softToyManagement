@@ -58,7 +58,7 @@ import DeleteDriver from './component/driver/DeleteDriver';
 import ShowDrivers from './component/driver/ShowDriver';
 import UpdateDriver from './component/driver/UpdateDriver';
 import DriversReport from './component/driver/DriverReports';
-
+import ProductionCatalog from './component/constomizeOrder/ProductionCatalog';
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -107,7 +107,7 @@ function App() {
           <Route path="/cuscancelled" element={<CusCancelledOrders />} />
           <Route path="/cuscompleted" element={<CusCompletedOrders />} />
           <Route path="/custom-order-report" element={<CustomOrderReport />} />
-
+          <Route path="/production-catalog" element={<ProductionCatalog />} />
           <Route path="/admin-deliveries" element={<AdminDeliveries />} />
 
           <Route path="/drivers/add" element={<AddDriver />} />
