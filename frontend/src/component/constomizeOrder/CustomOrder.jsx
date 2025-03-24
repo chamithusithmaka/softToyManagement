@@ -260,6 +260,7 @@ const CustomOrder = () => {
                                         <option value="bear">Bear</option>
                                         <option value="rabbit">Rabbit</option>
                                         <option value="cartoon">Cartoon Character</option>
+                                        <option value="giraf">Giraf</option>
                                     </select>
                                 </div>
                                 <div className="col-md-4 mb-3">
