@@ -64,18 +64,25 @@ const AddCategoryForm = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="name" className="form-label">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="form-control"
-                  required
-                />
-              </div>
+  <label htmlFor="name" className="form-label">
+    Name
+  </label>
+  <input
+    type="text"
+    id="name"
+    value={name}
+    onChange={(e) => {
+      const inputValue = e.target.value;
+      // Allow only letters and spaces
+      if (/^[a-zA-Z\s]*$/.test(inputValue)) {
+        setName(inputValue);
+      }
+    }}
+    className="form-control"
+    required
+  />
+</div>
+
 
               <div className="mb-3">
                 <label htmlFor="description" className="form-label">

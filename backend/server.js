@@ -45,6 +45,7 @@ const orderRoutes = require('./routes/Orders.js');
 const customizeOrder = require("./routes/customizeOrderRoute.js");
 const deliveryRoutes = require("./routes/deliveryRoutes.js");
 const driverRoutes = require("./routes/driverRoutes.js");  // Adjust path as needed
+const EmailRoute = require('./routes/EmailRoute.js'); // Adjust path as needed
 
 app.use(inventory);
 app.use(categories);
@@ -54,6 +55,7 @@ app.use('/api', orderRoutes);
 app.use("/api", customizeOrder);
 app.use("/api", deliveryRoutes);
 app.use("/api", driverRoutes);
+app.use('/api', EmailRoute); // Adjust path as needed
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaHome, FaClipboardList, FaBoxOpen, FaTimesCircle, FaCheckCircle, FaChartLine, FaSearch } from 'react-icons/fa';
+import { FaHome, FaClipboardList, FaBoxOpen,FaEnvelope, FaTimesCircle, FaCheckCircle, FaChartLine, FaSearch } from 'react-icons/fa';
 
 function ManagerHeader() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,6 +34,9 @@ function ManagerHeader() {
           </Link>
           <Link className="d-flex align-items-center text-dark text-decoration-none mb-3 p-2 rounded hover-bg-light" to="/report">
             <FaChartLine className="me-2" /> Report
+          </Link>
+          <Link className="d-flex align-items-center text-dark text-decoration-none mb-3 p-2 rounded hover-bg-light" to="/email">
+            <FaEnvelope className="me-2" /> Email
           </Link>
         </div>
 

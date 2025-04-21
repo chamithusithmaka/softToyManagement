@@ -117,22 +117,24 @@ const AddItemForm = () => {
             {error && <div className="alert alert-danger text-center">{error}</div>}
 
             <form onSubmit={handleSubmit} className="p-4 bg-white shadow rounded">
-              <div className="mb-3">
-                <label htmlFor="name" className="form-label">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={item.name}
-                  onChange={handleChange}
-                  className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                  required
-                />
-                {errors.name && <div className="invalid-feedback">{errors.name}</div>}
-              </div>
-
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={item.name}
+                onChange={handleChange}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, '');
+                }}
+                className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                required
+              />
+              {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+            </div>
               <div className="mb-3">
                 <label htmlFor="code" className="form-label">
                   Code

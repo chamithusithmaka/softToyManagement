@@ -32,7 +32,7 @@ const AdminHome = () => {
                 <div className="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4" style={{ width: '100px', height: '100px' }}>
                   <span className="fs-1">📦</span>
                 </div>
-                <h2 className="card-title text-dark fs-4 fw-bold mb-3">Order Management</h2>
+                <h2 className="card-title text-dark fs-4 fw-bold mb-3">Online Store Management</h2>
                 <p className="card-text text-muted">
                   Track and manage customer orders efficiently.
                 </p>

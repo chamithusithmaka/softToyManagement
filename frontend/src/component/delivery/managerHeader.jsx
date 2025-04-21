@@ -29,6 +29,12 @@ function ManagerHeader() {
           <Link className="text-white text-decoration-none fw-semibold d-flex align-items-center p-2 rounded hover-bg-light" to="/drivers/reports">
             <i className="fas fa-chart-line me-2"></i> Reports
           </Link>
+          <Link 
+            className="text-white text-decoration-none fw-semibold d-flex align-items-center p-2 rounded hover-bg-light" 
+            to="/request-production-orders"
+          >
+            <i className="fas fa-paper-plane me-2"></i> Request Production Orders
+          </Link>
         </div>
       </nav>
 

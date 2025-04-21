@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../../component/home/HomeHeader"; // Import the HomeHeader component
 import { Modal, Button } from "react-bootstrap"; // Import Bootstrap Modal
+import Swal from 'sweetalert2'; // Import SweetAlert
 
 const CustomOrder = () => {
     const [orderId, setOrderId] = useState("");
@@ -22,6 +23,7 @@ const CustomOrder = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [showPaymentModal, setShowPaymentModal] = useState(false); // State to control modal visibility
     const [error, setError] = useState(""); // State to store error messages
+
     // Auto-generate order ID
     useEffect(() => {
         const randomNum = Math.floor(1 + Math.random() * 999).toString().padStart(3, "0");
@@ -78,8 +80,6 @@ const CustomOrder = () => {
         }
     };
 
-
-
     // Payment validation functions
     const handleCardNumberChange = (e) => {
         const regex = /^\d{0,12}$/; // Only allow numbers and max length of 12
@@ -132,6 +132,7 @@ const CustomOrder = () => {
 
         setCreditCardInfo({ ...creditCardInfo, expiry: value });
     };
+
     const handleClear = () => {
         setCreditCardInfo({
             cardNumber: '',
@@ -141,12 +142,15 @@ const CustomOrder = () => {
         setError(''); // Clear any error messages
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
     
         if (paymentMethod === "credit-card" && (!creditCardInfo.cardNumber || !creditCardInfo.expiry || !creditCardInfo.cvv)) {
-            alert("Please fill in your credit card details.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Payment Information Required',
+                text: 'Please fill in your credit card details.'
+            });
             return;
         }
     
@@ -164,31 +168,101 @@ const CustomOrder = () => {
             paymentMethod,
             shippingMethod,
             creditCardInfo: paymentMethod === "credit-card" ? creditCardInfo : null,
-            userId: "fakeUserId123", // Use a fake user ID until the user model is implemented
-            customerInfo // Include customerInfo in the request
+            userId: "fakeUserId123",
+            customerInfo
         };
     
         try {
+            // Show processing payment message if credit card payment
+            if (paymentMethod === "credit-card") {
+                Swal.fire({
+                    title: 'Processing Payment',
+                    text: 'Please wait while we process your payment...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                // Simulate payment processing delay (you can remove this in production)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            }
+            
+            // Send the order to backend
             const response = await axios.post("http://localhost:5555/api/customorders", orderData);
-            setSuccessMessage("Order placed successfully!");
-            setErrorMessage("");
-            console.log("Order saved:", response.data);
-    
-            // Navigate to the delivery-detail page with the orderId
+            
+            // Show success notification based on payment method
+            if (paymentMethod === "credit-card") {
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Payment Successful',
+                    text: `Payment of LKR ${totalPrice.toLocaleString()} has been processed successfully!`,
+                    confirmButtonColor: '#0d6efd'
+                });
+            }
+            
+            // Show order success notification
+            await Swal.fire({
+                icon: 'success',
+                title: 'Order Placed Successfully!',
+                text: `Your order ${orderId} has been placed successfully. You will be redirected to the delivery details page.`,
+                confirmButtonColor: '#0d6efd'
+            });
+            
+            // Navigate to delivery details page
             window.location.href = `/delivery-detail/${orderId}`;
+            
         } catch (error) {
-            setErrorMessage("Failed to place the order. Please try again.");
-            setSuccessMessage("");
             console.error("Error saving order:", error);
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Order Failed',
+                text: 'Failed to place the order. Please try again.',
+                confirmButtonColor: '#dc3545'
+            });
         }
     };
 
-    // Handle payment method change
     const handlePaymentMethodChange = (method) => {
         setPaymentMethod(method);
         if (method === "credit-card") {
-            setShowPaymentModal(true); // Show modal for credit card details
+            // Reset credit card info before showing modal
+            setCreditCardInfo({ cardNumber: "", expiry: "", cvv: "" });
+            setError("");
+            setShowPaymentModal(true);
         }
+    };
+    
+    const handleSavePayment = () => {
+        // Validate card details
+        if (!creditCardInfo.cardNumber || !creditCardInfo.expiry || !creditCardInfo.cvv) {
+            setError("Please fill in all card details");
+            return;
+        }
+        
+        if (creditCardInfo.cardNumber.length < 12) {
+            setError("Card number must be at least 12 digits");
+            return;
+        }
+        
+        if (creditCardInfo.cvv.length < 3) {
+            setError("CVV must be 3 digits");
+            return;
+        }
+        
+        // Close the modal if all validations pass
+        setShowPaymentModal(false);
+        
+        // Show a small toast notification that card details are saved
+        Swal.fire({
+            icon: 'success',
+            title: 'Card Details Saved',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000
+        });
     };
 
     return (
@@ -443,7 +517,7 @@ const CustomOrder = () => {
                     <Button variant="secondary" onClick={() => setShowPaymentModal(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => setShowPaymentModal(false)}>
+                    <Button variant="primary" onClick={handleSavePayment}>
                         Save
                     </Button>
                 </Modal.Footer>

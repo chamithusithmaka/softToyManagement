@@ -28,6 +28,7 @@ import SalesSummary from "./component/orderManagement/SalesSummary";
 import OrderList from './component/orderManagement/OrderList';
 import ItemList from './component/orderManagement/InventoryItems';
 import OrderDetails from './component/orderManagement/OrderDetails';
+import OrderEmail from './component/orderManagement/OrderEmail';
 
 //home
 import HomePage from './component/home/HomePage';
@@ -41,7 +42,7 @@ import UpdateOrder from './component/constomizeOrder/UpdateOrder';
 import AllCustomOrders from "./component/constomizeOrder/AllCustomOrders";
 import CusOrderDetails from "./component/constomizeOrder/OrderDetails";
 import ViewDetail from './component/constomizeOrder/viewDetail';
-
+import SizeChart from './component/sizeChart/SizeChart';
 import CusOnDeliveryOrders from './component/constomizeOrder/CusOnDeliveryOrders';
 import CusPendingOrders from './component/constomizeOrder/CusPendingOrders';
 import CusCancelledOrders from './component/constomizeOrder/CusCancelledOrders';
@@ -59,6 +60,7 @@ import ShowDrivers from './component/driver/ShowDriver';
 import UpdateDriver from './component/driver/UpdateDriver';
 import DriversReport from './component/driver/DriverReports';
 import ProductionCatalog from './component/constomizeOrder/ProductionCatalog';
+import RequestProductionOrders from './component/delivery/RequestProductionOrder';
 function App() {
   const [cart, setCart] = useState([]); // State for the cart
 
@@ -66,6 +68,8 @@ function App() {
     <Router>
       <div>
         <Routes>
+          <Route path="/request-production-orders" element={<RequestProductionOrders />} />
+          <Route path="/email" element={<OrderEmail />} />
           <Route path="/inv" element={<InventoryItems />} />
           <Route path="/dashboard/inventory" element={<InventoryItems />} />
           <Route path="/dashboard/addcatagory" element={<AddCategoryForm />} />
@@ -98,6 +102,7 @@ function App() {
           <Route path="/customize-order" element={<CustomOrder />} />
           <Route path="/my-customize-order" element={<MyCostomizeOrders />} />
           <Route path="/order-details/:orderId" element={<CusotomOrderDetails />} />
+          
           <Route path="/update-order/:orderId" element={<UpdateOrder />} />
           <Route path="/all-custom-orders" element={<AllCustomOrders />} />
           <Route path="/custom-orders/:orderId" element={<CusOrderDetails />} />
@@ -115,6 +120,9 @@ function App() {
           <Route path="/drivers/update/:id" element={<UpdateDriver />} />
           <Route path="/drivers/delete/:id" element={<DeleteDriver />} />
           <Route path="/drivers/reports" element={<DriversReport />} />
+
+          <Route path="/size-chart" element={<SizeChart />} />
+          
         </Routes>
       </div>
     </Router>
