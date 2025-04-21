@@ -5,16 +5,22 @@ import { FaArrowRight, FaRuler, FaWeightHanging, FaTape } from "react-icons/fa";
 import smallBear from "./images/small-bear.png";
 import mediumBear from "./images/medium-bear.png";
 import largeBear from "./images/large-bear.png";
+import xlBear from "./images/xl-bear.png";
 
 import smallRabbit from "./images/small-rabbit.png";
 import mediumRabbit from "./images/medium-rabbit.png";
 import largeRabbit from "./images/large-rabbit.png";
-import largCartoon from "./images/large-cartoon.png";
-import mediumCartoon from "./images/medium-cartoon.png";
+import xlRabbit from "./images/xl-rabbit.png";
+
 import smallCartoon from "./images/small-cartoon.png";
+import mediumCartoon from "./images/medium-cartoon.png";
+import largCartoon from "./images/large-cartoon.png";
+import xlCartoon from "./images/xl-cartoon.png";
+
 import smallGiraf from "./images/small-girrafe.png";
 import mediumGiraf from "./images/medium-girrafe.png";
 import largrGiraf from "./images/large-girrafe.png";
+import xlGiraf from "./images/xl-girrafe.png";
 
 const SizeChart = () => {
   const [key, setKey] = useState("bears");
@@ -24,24 +30,28 @@ const SizeChart = () => {
     small: smallBear,
     medium: mediumBear,
     large: largeBear,
+    xl: xlBear,
   };
   
   const rabbitImages = {
     small: smallRabbit,
     medium: mediumRabbit,
     large: largeRabbit,
+    xl: xlRabbit,
   };
   
   const cartoonImages = {
     small: smallCartoon,
     medium: mediumCartoon,
     large: largCartoon,
+    xl: xlCartoon,
   };
   
   const girafImages = {
     small: smallGiraf,
     medium: mediumGiraf,
     large: largrGiraf,
+    xl: xlGiraf,
   };
 
   return (
@@ -116,7 +126,7 @@ const SizeChart = () => {
                   <Card.Body>
                     <Card.Title><FaWeightHanging className="me-2 text-primary" />For Collectors</Card.Title>
                     <Card.Text>
-                      Collectors often prefer Large sizes to showcase craftsmanship details.
+                      Collectors often prefer Large and Extra Large sizes to showcase craftsmanship details.
                     </Card.Text>
                   </Card.Body>
                 </Card>
@@ -168,38 +178,49 @@ const SizeDetails = ({ images, type, description }) => {
       
       <h4 className="mb-3">Size Comparison</h4>
       <Row className="mb-4 align-items-end">
-        <Col xs={12} md={4} className="text-center mb-3">
-          <div className="position-relative" style={{ height: "150px" }}>
+        <Col xs={12} sm={6} md={3} className="text-center mb-3">
+          <div className="position-relative" style={{ height: "130px" }}>
             <Image 
               src={images.small} 
               alt="Small Size" 
               className="h-100 object-fit-contain" 
-              onError={(e) => {e.target.src = "https://via.placeholder.com/150?text=Small+Size"}}
+              onError={(e) => {e.target.src = "https://via.placeholder.com/130?text=Small+Size"}}
             />
           </div>
           <h5 className="mt-2">Small</h5>
         </Col>
-        <Col xs={12} md={4} className="text-center mb-3">
-          <div className="position-relative" style={{ height: "180px" }}>
+        <Col xs={12} sm={6} md={3} className="text-center mb-3">
+          <div className="position-relative" style={{ height: "160px" }}>
             <Image 
               src={images.medium} 
               alt="Medium Size" 
               className="h-100 object-fit-contain"
-              onError={(e) => {e.target.src = "https://via.placeholder.com/180?text=Medium+Size"}}
+              onError={(e) => {e.target.src = "https://via.placeholder.com/160?text=Medium+Size"}}
             />
           </div>
           <h5 className="mt-2">Medium</h5>
         </Col>
-        <Col xs={12} md={4} className="text-center mb-3">
-          <div className="position-relative" style={{ height: "220px" }}>
+        <Col xs={12} sm={6} md={3} className="text-center mb-3">
+          <div className="position-relative" style={{ height: "190px" }}>
             <Image 
               src={images.large} 
               alt="Large Size" 
               className="h-100 object-fit-contain"
-              onError={(e) => {e.target.src = "https://via.placeholder.com/220?text=Large+Size"}}
+              onError={(e) => {e.target.src = "https://via.placeholder.com/190?text=Large+Size"}}
             />
           </div>
           <h5 className="mt-2">Large</h5>
+        </Col>
+        <Col xs={12} sm={6} md={3} className="text-center mb-3">
+          <div className="position-relative" style={{ height: "220px" }}>
+            <Image 
+              src={images.xl} 
+              alt="Extra Large Size" 
+              className="h-100 object-fit-contain"
+              onError={(e) => {e.target.src = "https://via.placeholder.com/220?text=Extra+Large+Size"}}
+            />
+          </div>
+          <h5 className="mt-2">Extra Large</h5>
         </Col>
       </Row>
 
@@ -240,6 +261,14 @@ const SizeDetails = ({ images, type, description }) => {
             <td>Ages 5+ / Room decor</td>
             <td>1.5x</td>
           </tr>
+          <tr>
+            <td><strong>Extra Large</strong></td>
+            <td>70-90</td>
+            <td>40-50</td>
+            <td>1500-2500</td>
+            <td>Ages 5+ / Floor display</td>
+            <td>2.0x</td>
+          </tr>
         </tbody>
       </Table>
       
@@ -275,6 +304,13 @@ const SizeDetails = ({ images, type, description }) => {
             <td>Detailed</td>
             <td>1.0-1.5</td>
             <td>Clothing, Hat, Lights</td>
+          </tr>
+          <tr>
+            <td><strong>Extra Large</strong></td>
+            <td>Very High</td>
+            <td>Premium</td>
+            <td>1.8-2.5</td>
+            <td>Clothing, Hat, Lights, Sound</td>
           </tr>
         </tbody>
       </Table>
