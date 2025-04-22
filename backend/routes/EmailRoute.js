@@ -1,13 +1,12 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
-require('dotenv').config();
 
 const router = express.Router();
 const upload = multer();
 
 // POST route to send an email
-//http://localhost:5555/api/send-email
+// http://localhost:5555/api/send-email
 router.post('/send-email', upload.single('file'), async (req, res) => {
     const { to, subject, text } = req.body;
     const file = req.file;
@@ -17,18 +16,18 @@ router.post('/send-email', upload.single('file'), async (req, res) => {
     }
 
     try {
-        // Create a transporter using your email credentials
+        // Create a transporter using your email credentials (hardcoded)
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
+                user: 'softtoysystem@gmail.com',
+                pass: 'nifoapmymhvukaeh',
             },
         });
 
         // Email options
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: 'softtoysystem@gmail.com',
             to,
             subject,
             text,
