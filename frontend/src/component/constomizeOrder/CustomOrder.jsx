@@ -284,12 +284,19 @@ const CustomOrder = () => {
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label">Name:</label>
                                     <input
-                                        type="text"
-                                        className="form-control"
-                                        value={customerInfo.name}
-                                        onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
-                                        required
-                                    />
+    type="text"
+    className="form-control"
+    value={customerInfo.name}
+    onChange={(e) => {
+        const value = e.target.value;
+        // Allow only letters (both lowercase and uppercase)
+        if (/^[a-zA-Z\s]*$/.test(value)) {
+            setCustomerInfo({ ...customerInfo, name: value });
+        }
+    }}
+    required
+/>
+
                                 </div>
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label">Address:</label>
@@ -302,14 +309,21 @@ const CustomOrder = () => {
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Phone:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        value={customerInfo.phone}
-                                        onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
-                                        required
-                                    />
+                                <label className="form-label">Phone:</label>
+<input
+    type="text"
+    className="form-control"
+    value={customerInfo.phone}
+    onChange={(e) => {
+        const value = e.target.value;
+        // Allow only digits and limit to 10 characters
+        if (/^\d{0,10}$/.test(value)) {
+            setCustomerInfo({ ...customerInfo, phone: value });
+        }
+    }}
+    required
+/>
+
                                 </div>
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label">Email:</label>

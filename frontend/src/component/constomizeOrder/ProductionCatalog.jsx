@@ -28,7 +28,7 @@ const ProductionCatalog = () => {
 
             {/* Main Content */}
             <div className="container mt-5">
-                <h2 className="text-center mb-4">Production Catalog</h2>
+                <h2 className="text-center mb-4"> Inventory Items</h2>
 
                 {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
